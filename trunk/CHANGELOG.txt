@@ -1,0 +1,500 @@
+TODO:
+
+- Parallel 2.5-opt, 3-opt, LK
+- Improve perturbation
+- MPI
+- Improve performance for Fermi GPUs (fix the registers problem)
+- Fix backtracking
+- Include hostname in logging
+- Windows GUI client source (in progress)
+- Improve the file parser (support for other file types, i.e. ATT or GEO)
+- Change parameter parsing (still depends on CUDA Toolkit code)
+- Improve/Change Makefile - there are too many parameters now
+- Implement parallel multi-GPU search for the initial descend (hybrid algorithm)
+- Tune CUDA and OpenCL code (remove unnecessary OPs as in the CPU version)
+- Neighborhood pruning (exponential function)
+- Asynchronous CUDA/OpenCL execution (while GPU executes the code, CPU can work on better perturbations)
+
+Logo v. 0.6 2013-04-18
+-----------------------
+- Parallel CPU local optimization + SSE/AVX/MIC (Xeon Phi) features (./src/utils/cpusimd.h, ./src/solvers/cpuMTSolver.cpp, ./src/solvers/cpuSolver.cpp)
+- Code optimization, removed redundant calculations, fewer FLOPs
+- Hydrid Parallel/MT CPU execution model (initial optimization done in parallel, later multiple independent threads)
+- Tuned the kernel for Tesla K20 GPUs
+- Fixed benchmark mode
+
+http://cloc.sourceforge.net v 1.53  T=0.5 s (104.0 files/s, 24668.0 lines/s)
+----------------------------------------------------------------------------------------------
+File                                                       blank        comment           code
+----------------------------------------------------------------------------------------------
+./src/kdtree++/kdtree.hpp                                    160            217            870
+./src/parser/cutil.h                                          89            450            393
+./src/cuda/opt_kernel.cu                                     139             90            380
+./src/utils/UtilsCL.cpp                                      119             49            327
+./src/solvers/CLSolver.cpp                                   210             50            318
+./src/solver.c                                               177             33            304
+./src/kdtree++/node.hpp                                       33             52            278
+./src/parser/cmd_arg_reader.h                                 82            160            247
+./src/solvers/CUDASolver.cpp                                 122             34            239
+./src/utils/cut.c                                             86             41            233
+./src/solvers/cpuMTSolver.cpp                                101             27            222
+./src/utils/kdtree_utils.c                                   124             68            209
+./src/cl/opt_e.cl                                            104             39            206
+./src/kdtree++/iterator.hpp                                   39             19            200
+./src/utils/common.c                                         101             41            194
+./src/utils/UtilsCUDA.cpp                                     56             36            194
+./Makefile                                                    71             14            178
+./src/solvers/ILSGlobalSolver.h                               45             18            168
+./src/defs.h                                                  46             33            157
+./src/utils/cpusimd.h                                         44             18            149
+./src/solvers/cpuSolver.cpp                                   75             24            136
+./src/parser/cutil.cpp                                        29             73            116
+./src/solvers/ILSGlobalSolverMT.cpp                           65             18            113
+./src/headers.h                                               27             22            112
+./src/solvers/localSolver.h                                   42             17             90
+./src/parser/cmd_arg_reader.cpp                               25             40             87
+./src/kdtree++/region.hpp                                     18             26             87
+./src/cl/opt.cl                                               65             47             87
+./src/utils/construction.c                                    56             69             80
+./src/utils/tsp_loader.c                                      55             43             79
+./src/solvers/CUDASolver.h                                    30             18             75
+./src/solvers/CLSolver.h                                      32             18             74
+./src/parser/exception.h                                      28             60             63
+./src/solvers/ILSGlobalSolverSequential.cpp                   34             16             60
+./src/kdtree++/allocator.hpp                                  21             17             58
+./src/kdtree++/function.hpp                                   16             18             55
+./src/solvers/ILSGlobalSolverMT.h                             23             19             51
+./src/solvers/cpuSolver.h                                     15             18             43
+./src/solvers/cpuMTSolver.h                                   16             18             43
+./src/utils/kdtree_utils.h                                    10             23             28
+./src/solvers/ILSGlobalSolverSequential.h                     17             18             26
+./src/solvers/twoOptLocalSolver.cpp                           16             18             26
+./src/solvers/twoOptLocalSolver.h                             14             17             23
+./src/cl/cl_defs.h                                             9             16             22
+./src/parser/error_checker.h                                  11             28             22
+./src/utils/UtilsCL.h                                          8             16             21
+./src/cuda/cuda_common.h                                      10             20             20
+./src/cuda/cuda_defs.h                                        15             34             20
+./src/utils/UtilsCUDA.h                                        7             16             19
+./src/solvers/ILSGlobalSolver.cpp                             11             16             19
+./run_test.sh                                                  4             13             12
+./src/main.c                                                  13             19             12
+----------------------------------------------------------------------------------------------
+SUM:                                                        2765           2324           7245
+----------------------------------------------------------------------------------------------
+
+Logo v. 0.52 2013-03-29
+-----------------------
+- Reimplemented logging solutions to a file
+- Fixed local optimization information display
+- Multithreaded CPU mode added
+- Fixed thread no display
+
+----------------------------------------------------------------------------------------------
+File                                                       blank        comment           code
+----------------------------------------------------------------------------------------------
+./src/kdtree++/kdtree.hpp                                    160            217            870
+./src/parser/cutil.h                                          89            450            393
+./src/cuda/opt_kernel.cu                                     135             89            351
+./src/utils/UtilsCL.cpp                                      119             49            327
+./src/solvers/CLSolver.cpp                                   214             50            322
+./src/kdtree++/node.hpp                                       33             52            277
+./src/solver.c                                               161             31            263
+./src/parser/cmd_arg_reader.h                                 82            160            247
+./src/solvers/CUDASolver.cpp                                 121             34            235
+./src/utils/common.c                                         117             41            231
+./src/utils/cut.c                                             84             41            224
+./src/utils/kdtree_utils.c                                   124             68            209
+./src/cl/opt_e.cl                                            104             39            206
+./src/kdtree++/iterator.hpp                                   39             19            200
+./src/utils/UtilsCUDA.cpp                                     56             36            194
+./src/solvers/ILSGlobalSolver.h                               45             18            168
+./Makefile                                                    56             12            141
+./src/defs.h                                                  43             30            140
+./src/parser/cutil.cpp                                        29             73            116
+./src/solvers/ILSGlobalSolverMT.cpp                           62             18            109
+./src/solvers/localSolver.h                                   42             17             90
+./src/parser/cmd_arg_reader.cpp                               25             40             87
+./src/kdtree++/region.hpp                                     18             26             87
+./src/cl/opt.cl                                               64             42             83
+./src/utils/construction.c                                    56             69             80
+./src/utils/tsp_loader.c                                      55             43             79
+./src/solvers/CUDASolver.h                                    30             18             75
+./src/solvers/CLSolver.h                                      32             18             74
+./src/headers.h                                                9             22             68
+./src/parser/exception.h                                      28             60             63
+./src/kdtree++/allocator.hpp                                  21             17             58
+./src/solvers/ILSGlobalSolverSequential.cpp                   31             16             56
+./src/kdtree++/function.hpp                                   16             18             55
+./src/solvers/ILSGlobalSolverMT.h                             23             19             51
+./src/solvers/cpuSolver.h                                     15             18             42
+./src/solvers/cpuSolver.cpp                                   26             20             38
+./src/utils/kdtree_utils.h                                    10             23             28
+./src/solvers/ILSGlobalSolverSequential.h                     17             18             26
+./src/solvers/twoOptLocalSolver.cpp                           16             18             26
+./src/solvers/twoOptLocalSolver.h                             14             17             23
+./src/cl/cl_defs.h                                             9             16             22
+./src/parser/error_checker.h                                  11             28             22
+./src/utils/UtilsCL.h                                          8             16             21
+./src/cuda/cuda_common.h                                      10             20             20
+./src/utils/UtilsCUDA.h                                        7             16             19
+./src/solvers/ILSGlobalSolver.cpp                             11             16             19
+./src/cuda/cuda_defs.h                                        14             34             19
+./run_test.sh                                                  4             13             12
+./src/main.c                                                  13             19             12
+----------------------------------------------------------------------------------------------
+SUM:                                                        2508           2244           6578
+----------------------------------------------------------------------------------------------
+
+Logo v. 0.51 2013-03-25
+-----------------------
+- Added CUDA Legacy GPUs' (i.e. 1.1, 1.2) support (Makefile - LEGACY_GPUS Option) (no atomic operations, 16kB of shared memory and 16 registers used, reduced number of threads per block)
+
+
+----------------------------------------------------------------------------------------------
+File                                                       blank        comment           code
+----------------------------------------------------------------------------------------------
+./src/kdtree++/kdtree.hpp                                    160            217            870
+./src/parser/cutil.h                                          89            450            393
+./src/cuda/opt_kernel.cu                                     135             89            351
+./src/utils/UtilsCL.cpp                                      119             49            327
+./src/solvers/CLSolver.cpp                                   214             50            322
+./src/kdtree++/node.hpp                                       33             52            277
+./src/solver.c                                               158             28            258
+./src/parser/cmd_arg_reader.h                                 82            160            247
+./src/solvers/CUDASolver.cpp                                 121             34            235
+./src/utils/common.c                                         117             41            230
+./src/utils/cut.c                                             82             41            222
+./src/utils/kdtree_utils.c                                   124             68            209
+./src/cl/opt_e.cl                                            104             39            206
+./src/kdtree++/iterator.hpp                                   39             19            200
+./src/utils/UtilsCUDA.cpp                                     56             36            194
+./src/solvers/ILSGlobalSolver.h                               45             18            168
+./Makefile                                                    56             12            141
+./src/defs.h                                                  43             30            139
+./src/parser/cutil.cpp                                        29             73            116
+./src/solvers/ILSGlobalSolverMT.cpp                           62             18            104
+./src/solvers/localSolver.h                                   42             17             90
+./src/parser/cmd_arg_reader.cpp                               25             40             87
+./src/kdtree++/region.hpp                                     18             26             87
+./src/cl/opt.cl                                               64             42             83
+./src/utils/construction.c                                    56             69             80
+./src/utils/tsp_loader.c                                      55             43             79
+./src/solvers/CUDASolver.h                                    30             18             75
+./src/solvers/CLSolver.h                                      32             18             74
+./src/headers.h                                                9             22             67
+./src/parser/exception.h                                      28             60             63
+./src/kdtree++/allocator.hpp                                  21             17             58
+./src/kdtree++/function.hpp                                   16             18             55
+./src/solvers/ILSGlobalSolverSequential.cpp                   31             16             53
+./src/solvers/ILSGlobalSolverMT.h                             23             19             51
+./src/solvers/cpuSolver.h                                     15             18             42
+./src/solvers/cpuSolver.cpp                                   26             20             38
+./src/utils/kdtree_utils.h                                    10             23             28
+./src/solvers/ILSGlobalSolverSequential.h                     17             18             26
+./src/solvers/twoOptLocalSolver.cpp                           17             18             24
+./src/solvers/twoOptLocalSolver.h                             14             17             23
+./src/cl/cl_defs.h                                             9             16             22
+./src/parser/error_checker.h                                  11             28             22
+./src/utils/UtilsCL.h                                          8             16             21
+./src/cuda/cuda_common.h                                      10             20             20
+./src/utils/UtilsCUDA.h                                        7             16             19
+./src/solvers/ILSGlobalSolver.cpp                             11             16             19
+./src/cuda/cuda_defs.h                                        14             34             19
+./src/main.c                                                  13             19             12
+./run_test.sh                                                  2              0              5
+----------------------------------------------------------------------------------------------
+SUM:                                                        2502           2228           6551
+----------------------------------------------------------------------------------------------
+
+Logo v. 0.5 2013-03-12
+-----------------------
+- Reimplemented most of the code in C++
+- Local and global Solvers became classes
+- Multi-device (CPU and/or OpenCL and/or CUDA) support with multithreading
+- Moved solvers to /solvers directory
+- Added time limited optimization
+- Writing visited solutions to file
+- Removed move backtracking (need to rewrite) and partial communication
+- Improved Makefile
+- Fixed OS X support
+
+------------------------------------------------------------------------------------------
+File                                                   blank        comment           code
+------------------------------------------------------------------------------------------
+./kdtree++/kdtree.hpp                                    160            217            870
+./parser/cutil.h                                          89            450            393
+./utils/UtilsCL.cpp                                      119             49            327
+./solvers/CLSolver.cpp                                   213             50            317
+./cuda/opt_kernel.cu                                     135             91            306
+./kdtree++/node.hpp                                       33             52            277
+./solver.c                                               158             28            258
+./parser/cmd_arg_reader.h                                 82            160            247
+./utils/common.c                                         117             41            230
+./solvers/CUDASolver.cpp                                 121             34            228
+./utils/cut.c                                             82             41            222
+./utils/kdtree_utils.c                                   124             68            209
+./cl/opt_e.cl                                            104             39            206
+./kdtree++/iterator.hpp                                   39             19            200
+./utils/UtilsCUDA.cpp                                     56             36            194
+./solvers/ILSGlobalSolver.h                               45             18            168
+./defs.h                                                  43             30            139
+./parser/cutil.cpp                                        29             73            116
+./solvers/ILSGlobalSolverMT.cpp                           63             18            102
+./solvers/localSolver.h                                   42             17             90
+./parser/cmd_arg_reader.cpp                               25             40             87
+./kdtree++/region.hpp                                     18             26             87
+./cl/opt.cl                                               64             42             83
+./utils/construction.c                                    56             69             80
+./utils/tsp_loader.c                                      55             43             79
+./solvers/CLSolver.h                                      32             18             74
+./headers.h                                                9             22             67
+./solvers/CUDASolver.h                                    31             18             65
+./parser/exception.h                                      28             60             63
+./kdtree++/allocator.hpp                                  21             17             58
+./kdtree++/function.hpp                                   16             18             55
+./solvers/ILSGlobalSolverSequential.cpp                   31             16             53
+./solvers/ILSGlobalSolverMT.h                             23             19             51
+./solvers/cpuSolver.h                                     15             18             42
+./solvers/cpuSolver.cpp                                   26             20             38
+./utils/kdtree_utils.h                                    10             23             28
+./solvers/ILSGlobalSolverSequential.h                     17             18             26
+./solvers/twoOptLocalSolver.cpp                           17             18             24
+./solvers/twoOptLocalSolver.h                             14             17             23
+./parser/error_checker.h                                  11             28             22
+./cl/cl_defs.h                                             9             16             22
+./utils/UtilsCL.h                                          8             16             21
+./solvers/ILSGlobalSolver.cpp                             11             16             19
+./utils/UtilsCUDA.h                                        7             16             19
+./cuda/cuda_common.h                                      10             20             18
+./cuda/cuda_defs.h                                        14             34             17
+./main.c                                                  13             19             12
+------------------------------------------------------------------------------------------
+SUM:                                                    2445           2218           6332
+------------------------------------------------------------------------------------------
+
+
+Logo v. 0.4, 2013-02-08
+-----------------------
+- Added pthreads support for multithreaded multiple starting point algorithm
+- Added communication algorithm between the threads to accelerate global search
+- Added move backtracking to avoid being stuck in a group of local minima
+- Improved the code structure, removed redundant parts (solver.c)
+- Corrected the 2-opt edge swap (thanks to Bernd Paradies)
+
+----------------------------------------------------------------------------------
+File                                           blank        comment           code
+----------------------------------------------------------------------------------
+./src/kdtree++/kdtree.hpp                        160            217            870
+./src/solver.c                                   249             80            501
+./src/cl/optCL.c                                 279             80            416
+./src/parser/cutil.h                              89            450            393
+./src/gpu.cu                                     140             58            302
+./src/opt_kernel.cu                              100             87            296
+./src/kdtree++/node.hpp                           33             52            277
+./src/cl/utilsCL.c                                91             53            253
+./src/parser/cmd_arg_reader.h                     82            160            247
+./src/kdtree_utils.c                             114             68            208
+./src/cl/opt_e.cl                                 68             39            204
+./src/kdtree++/iterator.hpp                       39             19            200
+./src/common.c                                    93             25            192
+./src/gpuinfo.cu                                  29             34            151
+./src/cut.c                                       38             44            139
+./src/defs.h                                      39             44            121
+./src/parser/cutil.cpp                            29             73            116
+./Makefile                                        44             13            102
+./src/parser/cmd_arg_reader.cpp                   25             40             87
+./src/kdtree++/region.hpp                         18             26             87
+./run_test.sh                                      3              0             84
+./src/headers.h                                   16             32             83
+./src/cl/opt.cl                                   59             42             82
+./src/construction.c                              53             69             81
+./src/cl/error.c                                   8             17             78
+./src/tsp_loader.c                                46             43             65
+./src/parser/exception.h                          28             60             63
+./src/kdtree++/allocator.hpp                      21             17             58
+./src/kdtree++/function.hpp                       16             18             55
+./src/cpu.c                                       36             34             55
+./batch.sh                                         7              0             35
+./src/kdtree_utils.h                              10             23             28
+./src/cl/cl_defs.h                                10             16             27
+./src/parser/error_checker.h                      11             28             22
+./src/gpu_common.h                                10             20             18
+./src/cl/utilsCL.h                                 3             16             18
+./src/main.c                                      13             19             12
+./src/cl/error.h                                   5             16              9
+----------------------------------------------------------------------------------
+SUM:                                            2114           2132           6035
+----------------------------------------------------------------------------------
+
+Logo v. 0.31, 2013-01-22
+-----------------------
+- Improved OpenCL code
+- Added device selection option for CUDA and OpenCL
+
+----------------------------------------------------------------------------------
+File                                           blank        comment           code
+----------------------------------------------------------------------------------
+./src/kdtree++/kdtree.hpp                        160            217            870
+./src/cl/optCL.c                                 281             78            410
+./src/parser/cutil.h                              89            450            393
+./src/opt_kernel.cu                              100             81            302
+./src/gpu.cu                                     129             56            284
+./src/kdtree++/node.hpp                           33             52            277
+./src/cl/utilsCL.c                                91             53            253
+./src/parser/cmd_arg_reader.h                     82            160            247
+./src/solver.c                                   129             59            234
+./src/kdtree_utils.c                             114             68            208
+./src/cl/opt_e.cl                                 68             39            204
+./src/kdtree++/iterator.hpp                       39             19            200
+./src/common.c                                    93             23            168
+./src/gpuinfo.cu                                  29             34            151
+./src/parser/cutil.cpp                            29             73            116
+./src/cut.c                                       24             32             94
+./src/parser/cmd_arg_reader.cpp                   25             40             87
+./src/kdtree++/region.hpp                         18             26             87
+./src/defs.h                                      36             44             87
+./run_test.sh                                      3              0             84
+./src/cl/opt.cl                                   59             42             82
+./src/headers.h                                   14             30             82
+./src/construction.c                              53             69             81
+./src/cl/error.c                                   8             17             78
+./Makefile                                        35             11             74
+./src/tsp_loader.c                                46             43             65
+./src/parser/exception.h                          28             60             63
+./src/kdtree++/allocator.hpp                      21             17             58
+./src/kdtree++/function.hpp                       16             18             55
+./src/cpu.c                                       37             33             52
+./src/kdtree_utils.h                              10             23             28
+./src/cl/cl_defs.h                                10             16             27
+./src/parser/error_checker.h                      11             28             22
+./src/gpu_common.h                                10             20             18
+./src/cl/utilsCL.h                                 3             16             18
+./src/main.c                                      13             19             12
+./src/cl/error.h                                   5             16              9
+----------------------------------------------------------------------------------
+SUM:                                            1951           2082           5580
+----------------------------------------------------------------------------------
+
+Logo v. 0.3, 2013-01-18
+-----------------------
+- Added OpenCL support
+- Improved perturbation algorithm
+
+----------------------------------------------------------------------------------
+File                                           blank        comment           code
+----------------------------------------------------------------------------------
+./src/kdtree++/kdtree.hpp                        160            217            870
+./src/parser/cutil.h                              89            450            393
+./src/cl/optCL.c                                 248             76            352
+./src/opt_kernel.cu                              100             81            302
+./src/gpu.cu                                     126             56            281
+./src/kdtree++/node.hpp                           33             52            277
+./src/cl/utilsCL.c                                91             53            253
+./src/parser/cmd_arg_reader.h                     82            160            247
+./src/solver.c                                   133             58            234
+./src/cl/opt_e.cl                                 68             32            209
+./src/kdtree_utils.c                             114             68            208
+./src/kdtree++/iterator.hpp                       39             19            200
+./src/common.c                                    93             23            167
+./src/gpuinfo.cu                                  29             34            151
+./src/parser/cutil.cpp                            29             73            116
+./src/cut.c                                       23             28             88
+./src/parser/cmd_arg_reader.cpp                   25             40             87
+./src/kdtree++/region.hpp                         18             26             87
+./src/cl/opt.cl                                   58             39             85
+./src/defs.h                                      37             44             85
+./src/headers.h                                   14             30             82
+./src/construction.c                              53             69             81
+./src/cl/error.c                                   8             17             78
+./Makefile                                        35             11             74
+./src/tsp_loader.c                                46             43             65
+./src/parser/exception.h                          28             60             63
+./src/kdtree++/allocator.hpp                      21             17             58
+./src/kdtree++/function.hpp                       16             18             55
+./src/cpu.c                                       37             33             52
+./run_test.sh                                      1              0             28
+./src/kdtree_utils.h                              10             23             28
+./src/cl/cl_defs.h                                10             16             27
+./src/parser/error_checker.h                      11             28             22
+./src/gpu_common.h                                10             20             18
+./src/cl/utilsCL.h                                 3             16             18
+./src/main.c                                      13             19             12
+./src/cl/error.h                                   5             16              9
+----------------------------------------------------------------------------------
+SUM:                                            1916           2065           5462
+----------------------------------------------------------------------------------
+
+Logo v. 0.2, 2012-09-26
+-----------------------
+- Fixed the memcpy to symbol in gpu.cu causing the GPU code to crash sometimes. Currently the symbol copying is substituted by simple memcpy
+- Improved the kernels' performance by ordering input data and avoiding conflicts while copying data from global to shared memory
+- CPU optimization routine added (sequential)
+- KD-tree construction added to find nearest neighbors efficiently - based on the libkdtree++ library
+- KD-tree based NN tour construction O(nlogn) time
+- Multifragment tour construction heuristic added
+- k nearest neighbors of point x can be found in sorted order in O(klogn) time in KD-tree
+
+----------------------------------------------------------------------------------
+File                                           blank        comment           code
+----------------------------------------------------------------------------------
+./src/kdtree++/kdtree.hpp                        160            217            870
+./src/parser/cutil.h                              89            450            393
+./src/opt_kernel.cu                               95             77            302
+./src/kdtree++/node.hpp                           33             52            277
+./src/gpu.cu                                     116             60            268
+./src/parser/cmd_arg_reader.h                     82            160            247
+./src/kdtree_utils.c                             114             68            208
+./src/kdtree++/iterator.hpp                       39             19            200
+./src/common.c                                    93             22            159
+./src/gpuinfo.cu                                  29             34            151
+./src/solver.c                                    98             39            143
+./src/parser/cutil.cpp                            29             73            116
+./src/cut.c                                       23             28             88
+./src/parser/cmd_arg_reader.cpp                   25             40             87
+./src/kdtree++/region.hpp                         18             26             87
+./src/defs.h                                      34             41             84
+./src/construction.c                              53             69             81
+./src/headers.h                                   12             25             65
+./src/tsp_loader.c                                46             43             65
+./src/parser/exception.h                          28             60             63
+./src/kdtree++/allocator.hpp                      21             17             58
+./src/kdtree++/function.hpp                       16             18             55
+./src/cpu.c                                       37             33             52
+./Makefile                                        28              5             45
+./src/kdtree_utils.h                              10             23             28
+./src/parser/error_checker.h                      11             28             22
+./src/gpu_common.h                                10             20             18
+./run_test.sh                                      1              0             18
+./src/main.c                                      13             19             12
+----------------------------------------------------------------------------------
+SUM:                                            1363           1766           4262
+----------------------------------------------------------------------------------
+
+Logo v. 0.1, 2012-08-12
+-----------------------
+- The initial version
+
+----------------------------------------------------------------------------------
+File                                           blank        comment           code
+----------------------------------------------------------------------------------
+./src/parser/cutil.h                              89            450            393
+./src/opt_kernel.cu                              104             77            288
+./src/parser/cmd_arg_reader.h                     82            160            247
+./src/gpu.cu                                     108             65            228
+./src/common.c                                   115             34            199
+./src/parser/cutil.cpp                            29             73            116
+./src/parser/cmd_arg_reader.cpp                   25             40             87
+./src/cut.c                                       21             28             82
+./src/solver.c                                    53             25             73
+./src/tsp_loader.c                                46             43             65
+./src/parser/exception.h                          28             60             63
+./src/defs.h                                      26             40             63
+./src/headers.h                                    6             21             54
+./Makefile                                        20              0             31
+./src/parser/error_checker.h                      11             28             22
+./src/main.c                                      12             19              8
+./run_test.sh                                      3             21              1
+----------------------------------------------------------------------------------
+SUM:                                             778           1184           2020
+----------------------------------------------------------------------------------
