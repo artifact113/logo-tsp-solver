@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.6  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,34 +17,28 @@
 
 #ifndef LEGACY_GPUS
 //mutex lock
-inline __device__ void lock( int* mutex ) {
-    while( atomicCAS( mutex, 0, 1 ) != 0 );
+inline __device__ void lock ( int* mutex ) {
+    while ( atomicCAS ( mutex, 0, 1 ) != 0 );
 }
 
 //mutex unlock
-inline __device__ void unlock( int* mutex ) {
-    atomicExch( mutex, 0 );
+inline __device__ void unlock ( int* mutex ) {
+    atomicExch ( mutex, 0 );
 }
 #endif
 
 //distance function for the simple kernel
-inline __device__ int calculateDistance2DSimple(unsigned int i, unsigned int j, city_coords* coords) {
-
+inline __device__ int calculateDistance2DSimple (unsigned int i, unsigned int j, city_coords* coords) {
     register float dx, dy;
-
     dx = coords[i].x - coords[j].x;
     dy = coords[i].y - coords[j].y;
-
-    return (int)(sqrtf(dx * dx + dy * dy) + 0.5f);
+    return (int) (sqrtf (dx * dx + dy * dy) + 0.5f);
 }
 
 //distance function for the extended kernel
-inline __device__ int calculateDistance2D_extended(unsigned int i, unsigned int j, city_coords* coordsA, city_coords* coordsB) {
-
+inline __device__ int calculateDistance2D_extended (unsigned int i, unsigned int j, city_coords* coordsA, city_coords* coordsB) {
     register float dx, dy;
-
     dx = coordsA[i].x - coordsB[j].x;
     dy = coordsA[i].y - coordsB[j].y;
-
-    return (int)(sqrtf(dx * dx + dy * dy) + 0.5f);
+    return (int) (sqrtf (dx * dx + dy * dy) + 0.5f);
 }

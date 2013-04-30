@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.6  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -46,132 +46,111 @@
  */
 #include <headers.h>
 
-int readFileCoords(char *filename, city_coords* coords) {
-
+int readFileCoords (char *filename, city_coords* coords) {
     register int i, ch, cnt, cities;
     int i1;
     float i2, i3;
     register float *posx, *posy;
     register FILE *f;
     char str[512];
-
-    f = fopen(filename, "r+t");
+    f = fopen (filename, "r+t");
 
     if (f == NULL) {
-
-        printf("could not open file %s\n", filename);
-        exit(-1);
-
+        printf ("could not open file %s\n", filename);
+        exit (-1);
     }
 
     //this code reads the coordinates properly only if there is at most one line
     //of comments
     //needs an improvement
-    ch = getc(f);
+    ch = getc (f);
 
-    while ((ch != EOF) && (ch != '\n')) {
-        ch = getc(f);
+    while ( (ch != EOF) && (ch != '\n') ) {
+        ch = getc (f);
     }
 
-    ch = getc(f);
+    ch = getc (f);
 
-    while ((ch != EOF) && (ch != '\n')) {
-        ch = getc(f);
+    while ( (ch != EOF) && (ch != '\n') ) {
+        ch = getc (f);
     }
 
-    ch = getc(f);
+    ch = getc (f);
 
-    while ((ch != EOF) && (ch != '\n')) {
-        ch = getc(f);
+    while ( (ch != EOF) && (ch != '\n') ) {
+        ch = getc (f);
     }
 
-    ch = getc(f);
+    ch = getc (f);
 
-    while ((ch != EOF) && (ch != ':')) {
-        ch = getc(f);
+    while ( (ch != EOF) && (ch != ':') ) {
+        ch = getc (f);
     }
 
-    int res = fscanf(f, "%s\n", str);
-    cities = atoi(str);
+    int res = fscanf (f, "%s\n", str);
+    cities = atoi (str);
 
     if (cities == 0) {
-
-        printf("%d cities read, check format\n", cities);
-        exit(-1);
-
+        printf ("%d cities read, check format\n", cities);
+        exit (-1);
     }
 
-    posx = (float *)malloc(sizeof(float) * cities);
-    posy = (float *)malloc(sizeof(float) * cities);
+    posx = (float *) malloc (sizeof (float) * cities);
+    posy = (float *) malloc (sizeof (float) * cities);
 
-    if ((posx == NULL) || (posy == NULL)) {
-
-        printf( "out of memory\n");
-        exit(-1);
-
+    if ( (posx == NULL) || (posy == NULL) ) {
+        printf ( "out of memory\n");
+        exit (-1);
     }
 
-    ch = getc(f);
+    ch = getc (f);
 
-    while ((ch != EOF) && (ch != '\n')) {
-        ch = getc(f);
+    while ( (ch != EOF) && (ch != '\n') ) {
+        ch = getc (f);
     }
 
-    res = fscanf(f, "%s\n", str);
+    res = fscanf (f, "%s\n", str);
 
-    if (strcmp(str, "NODE_COORD_SECTION") != 0) {
-
-        printf( "wrong file format\n");
-        exit(-1);
-
+    if (strcmp (str, "NODE_COORD_SECTION") != 0) {
+        printf ( "wrong file format\n");
+        exit (-1);
     }
 
     cnt = 0;
 
-    while (fscanf(f, "%d %f %f\n", &i1, &i2, &i3)) {
-
+    while (fscanf (f, "%d %f %f\n", &i1, &i2, &i3) ) {
         posx[cnt] = i2;
         posy[cnt] = i3;
         cnt++;
 
         if (cnt > cities) {
-
-            printf("input too long\n");
+            printf ("input too long\n");
             break;
-
         }
 
         if (cnt != i1) {
-
-            printf("input line mismatch: expected %d instead of %d\n", cnt, i1);
+            printf ("input line mismatch: expected %d instead of %d\n", cnt, i1);
         }
-
     }
 
     if (cnt != cities) {
-
-        printf("read %d instead of %d cities\n", cnt, cities);
-
+        printf ("read %d instead of %d cities\n", cnt, cities);
     }
 
-    res = fscanf(f, "%s", str);
+    res = fscanf (f, "%s", str);
 
-    if (strcmp(str, "EOF") != 0) {
-
-        printf("didn't see 'EOF' at end of file\n");
-
+    if (strcmp (str, "EOF") != 0) {
+        printf ("didn't see 'EOF' at end of file\n");
     }
 
-    fclose(f);
+    fclose (f);
 
     for (i = 0; i < cities; i++) {
-
         coords[i].x = posx[i];
         coords[i].y = posy[i];
     }
 
-    free(posx);
-    free(posy);
-
+    free (posx);
+    free (posy);
     return cities;
 }

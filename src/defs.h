@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.6  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -162,7 +162,7 @@ typedef struct {
     short                   showLocalOptimizationInfo;
     short                   trackSolution;
     short                   benchmark;
-	short					vectorsize;
+    short					vectorsize;
 
 } cmdArguments;
 
@@ -202,7 +202,7 @@ typedef struct fragment {
 
 class CompareFragments {
 public:
-    bool operator()(fragment& f1, fragment& f2) { // Returns true if t1 is earlier than t2
+    bool operator() (fragment& f1, fragment& f2) { // Returns true if t1 is earlier than t2
         if (f1.distance > f2.distance) {
             return true;
         }

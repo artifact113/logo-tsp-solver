@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.6  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -34,42 +34,38 @@ class CUDASolver : public TwoOptLocalSolver {
 
 public:
 
-    CUDASolver(city_coords* _coords, cmdArguments* _args, string _description, short _deviceId, ROUTE_DATA_TYPE _size) :
-        TwoOptLocalSolver(_coords, _args, _description, _deviceId, _size) {
-
+    CUDASolver (city_coords* _coords, cmdArguments* _args, string _description, short _deviceId, ROUTE_DATA_TYPE _size) :
+        TwoOptLocalSolver (_coords, _args, _description, _deviceId, _size) {
 #ifdef LEGACY_GPUS
-		setGpuBlocks(64);
-        setGpuThreads(256);
+        setGpuBlocks (64);
+        setGpuThreads (256);
 #else
-        setGpuBlocks(DEFAULT_GPU_BLOCKS);
-        setGpuThreads(DEFAULT_GPU_THREADS);
+        setGpuBlocks (DEFAULT_GPU_BLOCKS);
+        setGpuThreads (DEFAULT_GPU_THREADS);
 #endif
-        init(_deviceId);
-
+        init (_deviceId);
     };
 
-    CUDASolver(city_coords* _coords, cmdArguments* _args, string _description, short _deviceId, ROUTE_DATA_TYPE _size, unsigned _tID) :
-        TwoOptLocalSolver(_coords, _args, _description, _deviceId, _size, _tID)  {
+    CUDASolver (city_coords* _coords, cmdArguments* _args, string _description, short _deviceId, ROUTE_DATA_TYPE _size, unsigned _tID) :
+        TwoOptLocalSolver (_coords, _args, _description, _deviceId, _size, _tID)  {
 #ifdef LEGACY_GPUS
-		setGpuBlocks(64);
-        setGpuThreads(256);
+        setGpuBlocks (64);
+        setGpuThreads (256);
 #else
-        setGpuBlocks(DEFAULT_GPU_BLOCKS);
-        setGpuThreads(DEFAULT_GPU_THREADS);
+        setGpuBlocks (DEFAULT_GPU_BLOCKS);
+        setGpuThreads (DEFAULT_GPU_THREADS);
 #endif
-        init(_deviceId);
-
+        init (_deviceId);
     };
 
     // + blocks/threads
-    CUDASolver(city_coords* _coords, cmdArguments* _args, string _description, short _deviceId, ROUTE_DATA_TYPE _size, unsigned _tID,
-               unsigned _gpublocks, unsigned _gputhreads) :
+    CUDASolver (city_coords* _coords, cmdArguments* _args, string _description, short _deviceId, ROUTE_DATA_TYPE _size, unsigned _tID,
+                unsigned _gpublocks, unsigned _gputhreads) :
 
-        TwoOptLocalSolver(_coords, _args, _description, _deviceId, _size, _tID) {
-
-        setGpuBlocks(_gpublocks);
-        setGpuThreads(_gputhreads);
-        init(_deviceId);
+        TwoOptLocalSolver (_coords, _args, _description, _deviceId, _size, _tID) {
+        setGpuBlocks (_gpublocks);
+        setGpuThreads (_gputhreads);
+        init (_deviceId);
     };
 
     ~CUDASolver() {
@@ -78,23 +74,23 @@ public:
         }
     };
 
-    void setGpuBlocks(unsigned b) {
+    void setGpuBlocks (unsigned b) {
         gpuBlocks = b;
     };
-    void setGpuThreads(unsigned t) {
+    void setGpuThreads (unsigned t) {
         gpuThreads = t;
     };
 
 protected:
 
-    struct process_time benchmark(vector<ROUTE_DATA_TYPE> &route);
-    struct best2_out optimizeStep(const vector<ROUTE_DATA_TYPE> &route);
+    struct process_time benchmark (vector<ROUTE_DATA_TYPE> &route);
+    struct best2_out optimizeStep (const vector<ROUTE_DATA_TYPE> &route);
 
-    void init(void);
-    void init(int d);
-    void close(void);
+    void init (void);
+    void init (int d);
+    void close (void);
 
-    void cleanCUDA(void);
+    void cleanCUDA (void);
 
     city_coords* device_coords;
     city_coords* host_coords;
@@ -103,7 +99,7 @@ protected:
     city_coords* host_coords_ordered;
     short dev;
 
-    void executeKernel(void);
+    void executeKernel (void);
 
     unsigned gpuBlocks;
     unsigned gpuThreads;

@@ -1,12 +1,12 @@
 /*
 * Copyright 1993-2009 NVIDIA Corporation.  All rights reserved.
 *
-* NVIDIA Corporation and its licensors retain all intellectual property and 
-* proprietary rights in and to this software and related documentation and 
-* any modifications thereto.  Any use, reproduction, disclosure, or distribution 
-* of this software and related documentation without an express license 
+* NVIDIA Corporation and its licensors retain all intellectual property and
+* proprietary rights in and to this software and related documentation and
+* any modifications thereto.  Any use, reproduction, disclosure, or distribution
+* of this software and related documentation without an express license
 * agreement from NVIDIA Corporation is strictly prohibited.
-* 
+*
 */
 
 /* CUda UTility Library */
@@ -22,8 +22,7 @@
 //! Exception wrapper.
 //! @param Std_Exception Exception out of namespace std for easy typing.
 template<class Std_Exception>
-class Exception : public Std_Exception 
-{
+class Exception : public Std_Exception {
 public:
 
     //! @brief Static construction interface
@@ -31,30 +30,30 @@ public:
     //! @param file file in which the Exception occurs
     //! @param line line in which the Exception occurs
     //! @param detailed details on the code fragment causing the Exception
-    static void throw_it( const char* file, 
-                          const int line,
-                          const char* detailed = "-" );  
+    static void throw_it ( const char* file,
+                           const int line,
+                           const char* detailed = "-" );
 
     //! Static construction interface
     //! @return Alwayss throws ( Located_Exception<Exception>)
     //! @param file file in which the Exception occurs
     //! @param line line in which the Exception occurs
     //! @param detailed details on the code fragment causing the Exception
-    static void throw_it( const char* file, 
-                          const int line,      
-                          const std::string& detailed);  
+    static void throw_it ( const char* file,
+                           const int line,
+                           const std::string& detailed);
 
     //! Destructor
-    virtual ~Exception() throw(); 
+    virtual ~Exception() throw();
 
 private:
 
     //! Constructor, default (private)
-    Exception(); 
+    Exception();
 
     //! Constructor, standard
     //! @param str string returned by what()
-    Exception( const std::string& str); 
+    Exception ( const std::string& str);
 
 };
 
@@ -64,11 +63,9 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 template<class Exception_Typ>
 inline void
-handleException( const Exception_Typ& ex) 
-{
+handleException ( const Exception_Typ& ex) {
     std::cerr << ex.what() << std::endl;
-
-    exit( EXIT_FAILURE);
+    exit ( EXIT_FAILURE);
 }
 
 //! Convenience macros
@@ -98,16 +95,13 @@ handleException( const Exception_Typ& ex)
 /*static*/ template<class Std_Exception>
 void
 Exception<Std_Exception>::
-throw_it( const char* file, const int line, const char* detailed) 
-{
+throw_it ( const char* file, const int line, const char* detailed) {
     std::stringstream s;
-
-    // Quiet heavy-weight but exceptions are not for 
+    // Quiet heavy-weight but exceptions are not for
     // performance / release versions
     s << "Exception in file '" << file << "' in line " << line << "\n"
       << "Detailed description: " << detailed << "\n";
-
-    throw Exception( s.str());
+    throw Exception ( s.str() );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -117,9 +111,8 @@ throw_it( const char* file, const int line, const char* detailed)
 /*static*/ template<class Std_Exception>
 void
 Exception<Std_Exception>::
-throw_it( const char* file, const int line, const std::string& msg) 
-{
-    throw_it( file, line, msg.c_str());
+throw_it ( const char* file, const int line, const std::string& msg) {
+    throw_it ( file, line, msg.c_str() );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -127,7 +120,7 @@ throw_it( const char* file, const int line, const std::string& msg)
 ////////////////////////////////////////////////////////////////////////////////
 template<class Std_Exception>
 Exception<Std_Exception>::Exception() :
- Exception("Unknown Exception.\n")
+    Exception ("Unknown Exception.\n")
 { }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -135,9 +128,9 @@ Exception<Std_Exception>::Exception() :
 //! String returned by what().
 ////////////////////////////////////////////////////////////////////////////////
 template<class Std_Exception>
-Exception<Std_Exception>::Exception( const std::string& s) :
- Std_Exception( s)
-{ }   
+Exception<Std_Exception>::Exception ( const std::string& s) :
+    Std_Exception ( s)
+{ }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! Destructor

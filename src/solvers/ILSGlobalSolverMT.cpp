@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.6  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -30,85 +30,70 @@
 pthread_mutex_t ILSGlobalSolverMT::globalRouteMutex = PTHREAD_MUTEX_INITIALIZER;
 
 void ILSGlobalSolverMT::init() {
-
     std::stringstream sstm;
-    sstm << "#" << std::setfill('0') << std::setw(2) << threadID << "| " << description;
+    sstm << "#" << std::setfill ('0') << std::setw (2) << threadID << "| " << description;
 
     if (type == TYPE_GLOBAL_SOLVER_CPU) {
-
-        localSolver = new CPUSolver(coords, args, sstm.str(), deviceId, size, threadID);
+        localSolver = new CPUSolver (coords, args, sstm.str(), deviceId, size, threadID);
 
     } else if (type == TYPE_GLOBAL_SOLVER_CPU_PARALLEL) {
-
-        localSolver = new CPUMTSolver(coords, args, sstm.str(), deviceId, size, threadID);
+        localSolver = new CPUMTSolver (coords, args, sstm.str(), deviceId, size, threadID);
 
     } else if (type == TYPE_GLOBAL_SOLVER_CL) {
-
 #ifdef HAVE_OPENCL
-
-        localSolver = new CLSolver(coords, args, sstm.str(), deviceId, size, threadID);
+        localSolver = new CLSolver (coords, args, sstm.str(), deviceId, size, threadID);
 #else
-        trace("OpenCL code doesn't exist!\n");
-        exit(-1);
+        trace ("OpenCL code doesn't exist!\n");
+        exit (-1);
 #endif
 
     } else if (type == TYPE_GLOBAL_SOLVER_CUDA) {
-
 #ifdef HAVE_CUDA
-
-        localSolver = new CUDASolver(coords, args, sstm.str(), deviceId, size, threadID);
+        localSolver = new CUDASolver (coords, args, sstm.str(), deviceId, size, threadID);
 #else
-        trace("CUDA code doesn't exist!\n");
-        exit(-1);
+        trace ("CUDA code doesn't exist!\n");
+        exit (-1);
 #endif
 
     } else {
-        trace("Unknown ILS Global Solver type!\n");
+        trace ("Unknown ILS Global Solver type!\n");
     }
 
 #ifdef __linux__
 
     if (setAffinity == 1) {
-
         cpu_set_t mask;
-        CPU_ZERO(&mask);
-        CPU_SET(threadID % maxCoresUsed, &mask);
+        CPU_ZERO (&mask);
+        CPU_SET (threadID % maxCoresUsed, &mask);
 
-        if (sched_setaffinity(0, sizeof(mask), &mask) < 0) {
-            perror("sched_setaffinity");
+        if (sched_setaffinity (0, sizeof (mask), &mask) < 0) {
+            perror ("sched_setaffinity");
         }
 
-        trace("Thread %d, assigned to core %d\n", threadID, threadID % maxCoresUsed);
+        trace ("Thread %d, assigned to core %d\n", threadID, threadID % maxCoresUsed);
     }
 
 #endif
 }
 
-void ILSGlobalSolverMT::optimize(vector<ROUTE_DATA_TYPE> &route, int once) {
-
-
+void ILSGlobalSolverMT::optimize (vector<ROUTE_DATA_TYPE> &route, int once) {
     unsigned long temp;
- 	INIT_TRACEF
- 	
-    temp = routeLength(route, coords);
-
-    bestLocalMinimaLengths.push_back(temp);
-    bestLocalMinima.push_back(route);
+    INIT_TRACEF
+    temp = routeLength (route, coords);
+    bestLocalMinimaLengths.push_back (temp);
+    bestLocalMinima.push_back (route);
 
     //initial solution
-    if (bestGlobalMinimaLengths.empty()) {
-
+    if (bestGlobalMinimaLengths.empty() ) {
         pthread_mutex_lock (&globalRouteMutex);
 
-        if (bestGlobalMinimaLengths.empty()) {
-
-            bestGlobalMinimaLengths.push_back(temp);
-            bestGlobalMinima.push_back(route);
+        if (bestGlobalMinimaLengths.empty() ) {
+            bestGlobalMinimaLengths.push_back (temp);
+            bestGlobalMinima.push_back (route);
 
             if (comm == 1) {
-
-                trace("[%s] Initial global minimum (%ld) -> Length: %ld = %.5f%% of the target\n", localSolver->getDescription().c_str(), bestGlobalMinima.size(), bestGlobalMinimaLengths.back(), 100.0*(double)bestGlobalMinimaLengths.back()/(double)solution);
-            	tracef("%ld, %.5f\n", bestGlobalMinimaLengths.back(), 100.0*(double)bestGlobalMinimaLengths.back()/(double)solution);
+                trace ("[%s] Initial global minimum (%ld) -> Length: %ld = %.5f%% of the target\n", localSolver->getDescription().c_str(), bestGlobalMinima.size(), bestGlobalMinimaLengths.back(), 100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
+                tracef ("%ld, %.5f\n", bestGlobalMinimaLengths.back(), 100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
             }
         }
 
@@ -116,61 +101,48 @@ void ILSGlobalSolverMT::optimize(vector<ROUTE_DATA_TYPE> &route, int once) {
     }
 
     if (comm != 1) {
-
-        trace("[%s] Initial local minimum (%ld) -> Length: %ld = %.5f%% of the target\n", localSolver->getDescription().c_str(), bestLocalMinima.size(), bestLocalMinimaLengths.back(), 100.0*(double)bestLocalMinimaLengths.back()/(double)solution);
-		tracef("%ld, %.5f\n", bestLocalMinimaLengths.back(), 100.0*(double)bestLocalMinimaLengths.back()/(double)solution);
-		
+        trace ("[%s] Initial local minimum (%ld) -> Length: %ld = %.5f%% of the target\n", localSolver->getDescription().c_str(), bestLocalMinima.size(), bestLocalMinimaLengths.back(), 100.0 * (double) bestLocalMinimaLengths.back() / (double) solution);
+        tracef ("%ld, %.5f\n", bestLocalMinimaLengths.back(), 100.0 * (double) bestLocalMinimaLengths.back() / (double) solution);
     }
 
     do {
-
         if (comm == 1) {
-
             //read the best solution
-            if (bestGlobalMinimaLengths.back() < bestGlobalMinimaLengths.back()) {
-
-                bestGlobalMinimaLengths.push_back(bestGlobalMinimaLengths.back());
-                bestGlobalMinima.push_back(bestGlobalMinima.back());
+            if (bestGlobalMinimaLengths.back() < bestGlobalMinimaLengths.back() ) {
+                bestGlobalMinimaLengths.push_back (bestGlobalMinimaLengths.back() );
+                bestGlobalMinima.push_back (bestGlobalMinima.back() );
                 route = bestGlobalMinima.back();
-
             }
         }
 
-        localSolver->optimize(route, bestGlobalMinimaLengths.back());
+        localSolver->optimize (route, bestGlobalMinimaLengths.back() );
+        temp = routeLength (route, coords);
 
-        temp = routeLength(route, coords);
-
-        if (temp < bestLocalMinimaLengths.back()) {
-
-            bestLocalMinimaLengths.push_back(temp);
-            bestLocalMinima.push_back(route);
+        if (temp < bestLocalMinimaLengths.back() ) {
+            bestLocalMinimaLengths.push_back (temp);
+            bestLocalMinima.push_back (route);
 
             if (comm != 1 && !args->showLocalOptimizationInfo) {
-
-                trace("[%s] New local minimum (%ld) -> Length: %ld = %.5f%% of the target\n", localSolver->getDescription().c_str(), bestLocalMinima.size(), bestLocalMinimaLengths.back(), 100.0*(double)bestLocalMinimaLengths.back()/(double)solution);
-				tracef("%ld, %.5f\n", bestLocalMinimaLengths.back(), 100.0*(double)bestLocalMinimaLengths.back()/(double)solution);
-				
+                trace ("[%s] New local minimum (%ld) -> Length: %ld = %.5f%% of the target\n", localSolver->getDescription().c_str(), bestLocalMinima.size(), bestLocalMinimaLengths.back(), 100.0 * (double) bestLocalMinimaLengths.back() / (double) solution);
+                tracef ("%ld, %.5f\n", bestLocalMinimaLengths.back(), 100.0 * (double) bestLocalMinimaLengths.back() / (double) solution);
             }
 
-            if (temp < bestGlobalMinimaLengths.back()) {
-
+            if (temp < bestGlobalMinimaLengths.back() ) {
                 pthread_mutex_lock (&globalRouteMutex);
 
-                if (temp < bestGlobalMinimaLengths.back()) {
+                if (temp < bestGlobalMinimaLengths.back() ) {
+                    bestGlobalMinimaLengths.push_back (temp);
+                    bestGlobalMinima.push_back (route);
 
-                    bestGlobalMinimaLengths.push_back(temp);
-                    bestGlobalMinima.push_back(route);
-
-					if ((comm == 1 || args->pthreads > 1) && !args->showLocalOptimizationInfo) {
-                    	trace("[%s] New global minimum (%ld) -> Length: %ld = %.5f%% of the target\n", localSolver->getDescription().c_str(), bestGlobalMinima.size(), bestGlobalMinimaLengths.back(), 100.0*(double)bestGlobalMinimaLengths.back()/(double)solution);
-						tracef("%ld, %.5f\n", bestGlobalMinimaLengths.back(), 100.0*(double)bestGlobalMinimaLengths.back()/(double)solution);
-					}
-
+                    if ( (comm == 1 || args->pthreads > 1) && !args->showLocalOptimizationInfo) {
+                        trace ("[%s] New global minimum (%ld) -> Length: %ld = %.5f%% of the target\n", localSolver->getDescription().c_str(), bestGlobalMinima.size(), bestGlobalMinimaLengths.back(), 100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
+                        tracef ("%ld, %.5f\n", bestGlobalMinimaLengths.back(), 100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
+                    }
                 }
 
                 pthread_mutex_unlock (&globalRouteMutex);
             }
-			
+
         } else {
             if (comm == 1) {
                 route = bestGlobalMinima.back();
@@ -179,18 +151,14 @@ void ILSGlobalSolverMT::optimize(vector<ROUTE_DATA_TYPE> &route, int once) {
                 route = bestLocalMinima.back();
             }
         }
-		
-		if (once == 1) break;
-		
-        randomPerturbation(route);
 
-    }   while ((solution * (1.0f + error) < bestGlobalMinimaLengths.back()) && (timelimit == 0 || (getTotalTime()  < timelimit)));
+        if (once == 1) break;
 
+        randomPerturbation (route);
+    }   while ( (solution * (1.0f + error) < bestGlobalMinimaLengths.back() ) && (timelimit == 0 || (getTotalTime()  < timelimit) ) );
 }
 
 void ILSGlobalSolverMT::close() {
-
-    delete(localSolver);
-
+    delete (localSolver);
 }
 #endif

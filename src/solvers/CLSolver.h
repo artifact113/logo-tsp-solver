@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.6  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -34,14 +34,14 @@ class CLSolver : public TwoOptLocalSolver {
 
 public:
 
-    CLSolver(city_coords* _coords, cmdArguments* _args, string _description, long _deviceId, ROUTE_DATA_TYPE _size) :
-        TwoOptLocalSolver(_coords, _args, _description, _deviceId, _size) {
-        init((cl_device_id)_deviceId);
+    CLSolver (city_coords* _coords, cmdArguments* _args, string _description, long _deviceId, ROUTE_DATA_TYPE _size) :
+        TwoOptLocalSolver (_coords, _args, _description, _deviceId, _size) {
+        init ( (cl_device_id) _deviceId);
     };
 
-    CLSolver(city_coords* _coords, cmdArguments* _args, string _description, long _deviceId, ROUTE_DATA_TYPE _size, unsigned _tID) :
-        TwoOptLocalSolver(_coords, _args, _description, _deviceId, _size, _tID) {
-        init((cl_device_id)_deviceId);
+    CLSolver (city_coords* _coords, cmdArguments* _args, string _description, long _deviceId, ROUTE_DATA_TYPE _size, unsigned _tID) :
+        TwoOptLocalSolver (_coords, _args, _description, _deviceId, _size, _tID) {
+        init ( (cl_device_id) _deviceId);
     };
 
     ~CLSolver() {
@@ -55,27 +55,27 @@ public:
 protected:
 
     void init();
-    void init(cl_device_id dev);
-    void close(void);
+    void init (cl_device_id dev);
+    void close (void);
 
-    void executeKernel(int wait = 0);
+    void executeKernel (int wait = 0);
 
-    struct process_time benchmark(vector<ROUTE_DATA_TYPE> &route);
-    struct best2_out optimizeStep(const vector<ROUTE_DATA_TYPE> &route);
+    struct process_time benchmark (vector<ROUTE_DATA_TYPE> &route);
+    struct best2_out optimizeStep (const vector<ROUTE_DATA_TYPE> &route);
 
-    void chooseCLDevice(cl_dev_info d_num);
+    void chooseCLDevice (cl_dev_info d_num);
 
-    void cleanCL(void);
-    void initCL(cmdArguments* args, city_coords* coords, ROUTE_DATA_TYPE c, int profiling, cl_device_id dev);
+    void cleanCL (void);
+    void initCL (cmdArguments* args, city_coords* coords, ROUTE_DATA_TYPE c, int profiling, cl_device_id dev);
     void saveBinary (cl_program program, cl_device_id device, char* name);
-    double executionTime(cl_event gpuExecution);
-    cl_program compileProgram(const char* const header_file, const char* const kernel_file, cl_context cxContext, cl_device_id d);
-    char* readFile(const char* filename, size_t* length);
-    void copyFromDevice(const cl_mem dMem, void* const hostPtr, const unsigned size, cl_command_queue commandQueue, cl_event* gpuDone);
-    void runKernel(size_t localWorkSize, size_t globalWorkSize, cl_device_id device, cl_command_queue commandQueue, cl_kernel kernel, cl_event* gpuExecution);
+    double executionTime (cl_event gpuExecution);
+    cl_program compileProgram (const char* const header_file, const char* const kernel_file, cl_context cxContext, cl_device_id d);
+    char* readFile (const char* filename, size_t* length);
+    void copyFromDevice (const cl_mem dMem, void* const hostPtr, const unsigned size, cl_command_queue commandQueue, cl_event* gpuDone);
+    void runKernel (size_t localWorkSize, size_t globalWorkSize, cl_device_id device, cl_command_queue commandQueue, cl_kernel kernel, cl_event* gpuExecution);
 
-    const char* oclErrorString(cl_int error);
-    void checkError(const cl_int ciErrNum, const char* const operation);
+    const char* oclErrorString (cl_int error);
+    void checkError (const cl_int ciErrNum, const char* const operation);
 
     cl_context context;
     cl_program program;

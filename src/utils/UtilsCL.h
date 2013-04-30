@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.6  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -35,10 +35,10 @@ public:
 
     static std::vector<cl_dev_info> getAllDevices();
     static std::vector<deviceInfo> listDevices();
-    static cl_dev_info getDevice(cl_device_id device);
-    static void devInfo(cl_device_id device, int extended);
-    static void checkError(const cl_int ciErrNum, const char* const operation);
-    static const char* oclErrorString(cl_int error);
+    static cl_dev_info getDevice (cl_device_id device);
+    static void devInfo (cl_device_id device, int extended);
+    static void checkError (const cl_int ciErrNum, const char* const operation);
+    static const char* oclErrorString (cl_int error);
 
 };
 #endif
