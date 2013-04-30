@@ -1,12 +1,12 @@
 /*
 * Copyright 1993-2009 NVIDIA Corporation.  All rights reserved.
 *
-* NVIDIA Corporation and its licensors retain all intellectual property and 
-* proprietary rights in and to this software and related documentation and 
-* any modifications thereto.  Any use, reproduction, disclosure, or distribution 
-* of this software and related documentation without an express license 
+* NVIDIA Corporation and its licensors retain all intellectual property and
+* proprietary rights in and to this software and related documentation and
+* any modifications thereto.  Any use, reproduction, disclosure, or distribution
+* of this software and related documentation without an express license
 * agreement from NVIDIA Corporation is strictly prohibited.
-* 
+*
 */
 
 
@@ -39,25 +39,21 @@
 //! @param flag_name  name of command line flag
 ////////////////////////////////////////////////////////////////////////////////
 CUTBoolean CUTIL_API
-cutCheckCmdLineFlag( const int argc, const char** argv, const char* flag_name) 
-{
+cutCheckCmdLineFlag ( const int argc, const char** argv, const char* flag_name) {
     CUTBoolean ret_val = CUTFalse;
 
-    try 
-    {
-        // initalize 
-        CmdArgReader::init( argc, argv);
+    try {
+        // initalize
+        CmdArgReader::init ( argc, argv);
 
         // check if the command line argument exists
-        if( CmdArgReader::existArg( flag_name)) 
-        {
+        if ( CmdArgReader::existArg ( flag_name) ) {
             ret_val = CUTTrue;
         }
-    }
-    catch( const std::exception& /*ex*/) 
-    {    
+
+    } catch ( const std::exception& /*ex*/) {
         std::cerr << "Error when parsing command line argument string." << std::endl;
-    } 
+    }
 
     return ret_val;
 }
@@ -72,33 +68,29 @@ cutCheckCmdLineFlag( const int argc, const char** argv, const char* flag_name)
 //! @param val  value of the command line argument
 ////////////////////////////////////////////////////////////////////////////////
 CUTBoolean CUTIL_API
-cutGetCmdLineArgumenti( const int argc, const char** argv, 
-                        const char* arg_name, int* val) 
-{
+cutGetCmdLineArgumenti ( const int argc, const char** argv,
+                         const char* arg_name, int* val) {
     CUTBoolean ret_val = CUTFalse;
 
-    try 
-    {
+    try {
         // initialize
-        CmdArgReader::init( argc, argv);
-
+        CmdArgReader::init ( argc, argv);
         // access argument
-        const int* v = CmdArgReader::getArg<int>( arg_name);
-        if( NULL != v) 
-        {
+        const int* v = CmdArgReader::getArg<int> ( arg_name);
+
+        if ( NULL != v) {
             // assign value
             *val = *v;
             ret_val = CUTTrue;
-        }		
-		else {
-			// fail safe
-			val = NULL;
-		}
-    }
-    catch( const std::exception& /*ex*/) 
-    {    
+
+        } else {
+            // fail safe
+            val = NULL;
+        }
+
+    } catch ( const std::exception& /*ex*/) {
         std::cerr << "Error when parsing command line argument string." << std::endl;
-    } 
+    }
 
     return ret_val;
 }
@@ -113,33 +105,29 @@ cutGetCmdLineArgumenti( const int argc, const char** argv,
 //! @param val  value of the command line argument
 ////////////////////////////////////////////////////////////////////////////////
 CUTBoolean CUTIL_API
-cutGetCmdLineArgumentf( const int argc, const char** argv, 
-                       const char* arg_name, float* val) 
-{
+cutGetCmdLineArgumentf ( const int argc, const char** argv,
+                         const char* arg_name, float* val) {
     CUTBoolean ret_val = CUTFalse;
 
-    try 
-    {
+    try {
         // initialize
-        CmdArgReader::init( argc, argv);
-
+        CmdArgReader::init ( argc, argv);
         // access argument
-        const float* v = CmdArgReader::getArg<float>( arg_name);
-        if( NULL != v) 
-        {
+        const float* v = CmdArgReader::getArg<float> ( arg_name);
+
+        if ( NULL != v) {
             // assign value
             *val = *v;
             ret_val = CUTTrue;
+
+        } else {
+            // fail safe
+            val = NULL;
         }
-		else {
-			// fail safe
-			val = NULL;
-		}
-    }
-    catch( const std::exception& /*ex*/) 
-    {    
+
+    } catch ( const std::exception& /*ex*/) {
         std::cerr << "Error when parsing command line argument string." << std::endl;
-    } 
+    }
 
     return ret_val;
 }
@@ -154,40 +142,34 @@ cutGetCmdLineArgumentf( const int argc, const char** argv,
 //! @param val  value of the command line argument
 ////////////////////////////////////////////////////////////////////////////////
 CUTBoolean CUTIL_API
-cutGetCmdLineArgumentstr( const int argc, const char** argv, 
-                         const char* arg_name, char** val) 
-{
+cutGetCmdLineArgumentstr ( const int argc, const char** argv,
+                           const char* arg_name, char** val) {
     CUTBoolean ret_val = CUTFalse;
 
-    try 
-    {
+    try {
         // initialize
-        CmdArgReader::init( argc, argv);
-
+        CmdArgReader::init ( argc, argv);
         // access argument
-        const std::string* v = CmdArgReader::getArg<std::string>( arg_name);
-        if( NULL != v) 
-        {
+        const std::string* v = CmdArgReader::getArg<std::string> ( arg_name);
 
+        if ( NULL != v) {
             // allocate memory for the string
-            *val = (char*) malloc( sizeof(char) * (v->length() + 1));
+            *val = (char*) malloc ( sizeof (char) * (v->length() + 1) );
             // copy from string to c_str
-            strcpy( *val, v->c_str());
+            strcpy ( *val, v->c_str() );
             ret_val = CUTTrue;
-        }		
-		else {
-			// fail safe
-			*val = NULL;
-		}
+
+        } else {
+            // fail safe
+            *val = NULL;
+        }
+
+    } catch ( const std::exception& /*ex*/) {
+        std::cerr << "Error when parsing command line argument string." <<
+                  std::endl;
     }
-    catch( const std::exception& /*ex*/) 
-    {    
-        std::cerr << "Error when parsing command line argument string."<< 
-        std::endl;
-    } 
 
     return ret_val;
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -198,17 +180,14 @@ cutGetCmdLineArgumentstr( const int argc, const char** argv,
 //! @param line  __LINE__ macro
 ////////////////////////////////////////////////////////////////////////////////
 CUTBoolean CUTIL_API
-cutCheckCondition( int val, const char* file, const int line) 
-{
+cutCheckCondition ( int val, const char* file, const int line) {
     CUTBoolean ret_val = CUTTrue;
 
-    try 
-    {
+    try {
         // check for error
-        ErrorChecker::condition( (0 == val) ? false : true, file, line);
-    }
-    catch( const std::exception& ex) 
-    {
+        ErrorChecker::condition ( (0 == val) ? false : true, file, line);
+
+    } catch ( const std::exception& ex) {
         // print where the exception occured
         std::cerr << ex.what() << std::endl;
         ret_val = CUTFalse;

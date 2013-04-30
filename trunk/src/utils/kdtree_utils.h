@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.6  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -35,19 +35,19 @@ using namespace std;
 //Kd-tree struct
 struct pointStruct {
 
-    inline float operator[](int const N) const {
+    inline float operator[] (int const N) const {
         return d[N];
     }
 
-    inline bool operator==(pointStruct const& other) const {
+    inline bool operator== (pointStruct const& other) const {
         return this->d[0] == other.d[0] && this->d[1] == other.d[1];
     }
 
-    inline bool operator!=(pointStruct const& other) const {
+    inline bool operator!= (pointStruct const& other) const {
         return this->d[0] != other.d[0] || this->d[1] != other.d[1];
     }
 
-    friend ostream & operator<<(ostream & o, pointStruct const& d) {
+    friend ostream & operator<< (ostream & o, pointStruct const& d) {
         return o << "(" << d[0] << "," << d[1] << ")";
     }
 
@@ -55,7 +55,7 @@ struct pointStruct {
     ROUTE_DATA_TYPE id;
 };
 
-typedef KDTree::KDTree<2, pointStruct, std::pointer_to_binary_function<pointStruct,int,double> > kd_tree;
-inline double return_dup( pointStruct d, int k ) {
+typedef KDTree::KDTree<2, pointStruct, std::pointer_to_binary_function<pointStruct, int, double> > kd_tree;
+inline double return_dup ( pointStruct d, int k ) {
     return d[k];
 }

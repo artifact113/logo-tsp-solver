@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.6  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,33 +29,33 @@ public:
         init();
     };
 
-    CPUSolver(city_coords* _coords) :
-        TwoOptLocalSolver(_coords) {
+    CPUSolver (city_coords* _coords) :
+        TwoOptLocalSolver (_coords) {
         init();
     };
 
-    CPUSolver(city_coords* _coords, cmdArguments* _args) :
-        TwoOptLocalSolver(_coords, _args) {
+    CPUSolver (city_coords* _coords, cmdArguments* _args) :
+        TwoOptLocalSolver (_coords, _args) {
         init();
     };
 
-    CPUSolver(city_coords* _coords, cmdArguments* _args, string _description) :
-        TwoOptLocalSolver(_coords, _args, _description) {
+    CPUSolver (city_coords* _coords, cmdArguments* _args, string _description) :
+        TwoOptLocalSolver (_coords, _args, _description) {
         init();
     };
 
-    CPUSolver(city_coords* _coords, cmdArguments* _args, string _description, short _deviceId) :
-        TwoOptLocalSolver(_coords, _args, _description, _deviceId) {
+    CPUSolver (city_coords* _coords, cmdArguments* _args, string _description, short _deviceId) :
+        TwoOptLocalSolver (_coords, _args, _description, _deviceId) {
         init();
     };
 
-    CPUSolver(city_coords* _coords, cmdArguments* _args, string _description, short _deviceId, ROUTE_DATA_TYPE _size) :
-        TwoOptLocalSolver(_coords, _args, _description, _deviceId, _size) {
+    CPUSolver (city_coords* _coords, cmdArguments* _args, string _description, short _deviceId, ROUTE_DATA_TYPE _size) :
+        TwoOptLocalSolver (_coords, _args, _description, _deviceId, _size) {
         init();
     };
 
-    CPUSolver(city_coords* _coords, cmdArguments* _args, string _description, short _deviceId, ROUTE_DATA_TYPE _size, unsigned _tID) :
-        TwoOptLocalSolver(_coords, _args, _description, _deviceId, _size, _tID) {
+    CPUSolver (city_coords* _coords, cmdArguments* _args, string _description, short _deviceId, ROUTE_DATA_TYPE _size, unsigned _tID) :
+        TwoOptLocalSolver (_coords, _args, _description, _deviceId, _size, _tID) {
         init();
     };
 
@@ -67,10 +67,10 @@ public:
     void init();
     void close();
     //virtual void optimize(vector<ROUTE_DATA_TYPE> &route, unsigned long bestLength);
-    virtual struct process_time benchmark(vector<ROUTE_DATA_TYPE> &route);
+    virtual struct process_time benchmark (vector<ROUTE_DATA_TYPE> &route);
 
 protected:
-    virtual struct best2_out optimizeStep(const vector<ROUTE_DATA_TYPE> &route);
-    
+    virtual struct best2_out optimizeStep (const vector<ROUTE_DATA_TYPE> &route);
+
 };
 #endif
