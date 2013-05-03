@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.62  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,7 +25,8 @@
 #include <CUDASolver.h>
 #endif
 
-void ILSGlobalSolverSequential::init() {
+void
+ILSGlobalSolverSequential::init() {
     std::stringstream sstm;
     sstm << description;
 
@@ -56,35 +57,49 @@ void ILSGlobalSolverSequential::init() {
     }
 }
 
-void ILSGlobalSolverSequential::optimize (vector<ROUTE_DATA_TYPE> &route, int once) {
-    unsigned long temp;
-    INIT_TRACEF
-    temp = routeLength (route, coords);
+void
+ILSGlobalSolverSequential::optimize (vector < ROUTE_DATA_TYPE > &route, int once) {
+    unsigned long   temp;
+    INIT_TRACEF temp = routeLength (route, coords);
     bestGlobalMinimaLengths.push_back (temp);
     bestGlobalMinima.push_back (route);
-    trace ("[%s] Initial minimum (%ld) -> Length: %ld = %.5f%% of the target\n", localSolver->getDescription().c_str(), bestGlobalMinima.size(), bestGlobalMinimaLengths.back(), 100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
-    tracef ("%ld, %.5f\n", bestGlobalMinimaLengths.back(), 100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
+    trace ("[%s] Initial minimum (%ld) -> Length: %ld = %.5f%% of the target\n",
+           localSolver->getDescription().c_str(), bestGlobalMinima.size(),
+           bestGlobalMinimaLengths.back(),
+           100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
+    tracef ("%ld, %.5f\n", bestGlobalMinimaLengths.back(),
+            100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
 
     do {
-        localSolver->optimize (route, bestGlobalMinimaLengths );
+        localSolver->optimize (route, bestGlobalMinimaLengths);
         temp = routeLength (route, coords);
 
         if (temp < bestGlobalMinimaLengths.back() ) {
             bestGlobalMinimaLengths.push_back (temp);
             bestGlobalMinima.push_back (route);
-            trace ("[%s] New global minimum (%ld) -> Length: %ld = %.5f%% of the target\n", localSolver->getDescription().c_str(), bestGlobalMinima.size(), bestGlobalMinimaLengths.back(), 100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
-            tracef ("%ld, %.5f\n", bestGlobalMinimaLengths.back(), 100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
+            trace
+            ("[%s] New global minimum (%ld) -> Length: %ld = %.5f%% of the target\n",
+             localSolver->getDescription().c_str(), bestGlobalMinima.size(),
+             bestGlobalMinimaLengths.back(),
+             100.0 * (double) bestGlobalMinimaLengths.back() /
+             (double) solution);
+            tracef ("%ld, %.5f\n", bestGlobalMinimaLengths.back(),
+                    100.0 * (double) bestGlobalMinimaLengths.back() /
+                    (double) solution);
 
         } else {
             route = bestGlobalMinima.back();
         }
 
-        if (once == 1) break;
+        if (once == 1)
+            break;
 
         randomPerturbation (route);
-    }   while ( (solution * (1.0f + error) < bestGlobalMinimaLengths.back() ) && (timelimit == 0 || (getTotalTime()  < timelimit) ) );
+    } while ( (solution * (1.0f + error) < bestGlobalMinimaLengths.back() )
+              && (timelimit == 0 || (getTotalTime() < timelimit) ) );
 }
 
-void ILSGlobalSolverSequential::close() {
+void
+ILSGlobalSolverSequential::close() {
     delete (localSolver);
 }
