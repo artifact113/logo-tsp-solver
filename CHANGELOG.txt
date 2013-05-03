@@ -19,70 +19,24 @@ Logo v. 0.62 2013-05-03
 -----------------------
 - Changed local optimization display method, passing a pointer to global solutions instead of a value
 
+http://cloc.sourceforge.net v 1.58  T=0.5 s (106.0 files/s, 25416.0 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+C/C++ Header                    28           1148           1441           3492
+C++                             13            556            526           2764
+C                                7            289            331           1328
+OpenCL                           2             90             97            345
+make                             1             71             14            178
+Bourne Shell                     2              6             13             19
+-------------------------------------------------------------------------------
+SUM:                            53           2160           2422           8126
+-------------------------------------------------------------------------------
+
 Logo v. 0.61 2013-04-30
 -----------------------
 - Fixed/Improved perturbation function
 
-http://cloc.sourceforge.net v 1.53  T=0.5 s (106.0 files/s, 22698.0 lines/s)
-----------------------------------------------------------------------------------------------
-File                                                       blank        comment           code
-----------------------------------------------------------------------------------------------
-./src/kdtree++/kdtree.hpp                                    160            217            870
-./src/parser/cutil.h                                          89            450            393
-./src/cuda/opt_kernel.cu                                      84             90            380
-./src/utils/UtilsCL.cpp                                       64             49            326
-./src/solvers/CLSolver.cpp                                    90             50            315
-./src/solver.c                                                80             32            298
-./src/kdtree++/node.hpp                                       33             52            278
-./src/solvers/CUDASolver.cpp                                  82             34            238
-./src/utils/cut.c                                             75             41            233
-./src/solvers/cpuMTSolver.cpp                                 49             27            222
-./src/utils/kdtree_utils.c                                    52             68            208
-./src/parser/cmd_arg_reader.h                                 85            160            206
-./src/cl/opt_e.cl                                             66             39            206
-./src/kdtree++/iterator.hpp                                   39             19            200
-./src/utils/common.c                                          45             41            194
-./src/utils/UtilsCUDA.cpp                                     26             36            194
-./Makefile                                                    71             14            178
-./src/solvers/ILSGlobalSolver.h                               27             18            168
-./src/defs.h                                                  46             33            157
-./src/utils/cpusimd.h                                         44             18            149
-./src/solvers/cpuSolver.cpp                                   37             24            136
-./src/solvers/ILSGlobalSolverMT.cpp                           33             18            113
-./src/headers.h                                               20             22            112
-./src/solvers/localSolver.h                                   21             17             90
-./src/parser/cutil.cpp                                        35             73             89
-./src/kdtree++/region.hpp                                     18             26             87
-./src/cl/opt.cl                                               28             47             87
-./src/utils/tsp_loader.c                                      34             43             79
-./src/utils/construction.c                                    26             69             77
-./src/solvers/CUDASolver.h                                    26             18             75
-./src/solvers/CLSolver.h                                      32             18             74
-./src/parser/cmd_arg_reader.cpp                               26             43             67
-./src/solvers/ILSGlobalSolverSequential.cpp                   14             16             60
-./src/parser/exception.h                                      25             60             59
-./src/kdtree++/allocator.hpp                                  21             17             58
-./src/kdtree++/function.hpp                                   16             18             55
-./src/solvers/ILSGlobalSolverMT.h                             14             19             51
-./src/solvers/cpuSolver.h                                     15             18             43
-./src/solvers/cpuMTSolver.h                                   16             18             43
-./src/utils/kdtree_utils.h                                    10             23             28
-./src/solvers/ILSGlobalSolverSequential.h                     11             18             26
-./src/solvers/twoOptLocalSolver.cpp                            8             18             26
-./src/solvers/twoOptLocalSolver.h                             14             17             23
-./src/cl/cl_defs.h                                             9             16             22
-./src/utils/UtilsCL.h                                          8             16             21
-./src/solvers/ILSGlobalSolver.cpp                              7             17             20
-./src/cuda/cuda_common.h                                       4             20             20
-./src/cuda/cuda_defs.h                                        15             34             20
-./src/utils/UtilsCUDA.h                                        7             16             19
-./src/parser/error_checker.h                                  11             28             19
-./run_test.sh                                                  4             13             12
-./src/main.c                                                   7             19             12
-./batch.sh                                                     0              1              6
-----------------------------------------------------------------------------------------------
-SUM:                                                        1879           2328           7142
-----------------------------------------------------------------------------------------------
 
 Logo v. 0.6 2013-04-18
 -----------------------
