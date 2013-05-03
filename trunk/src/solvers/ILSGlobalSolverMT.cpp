@@ -115,7 +115,7 @@ void ILSGlobalSolverMT::optimize (vector<ROUTE_DATA_TYPE> &route, int once) {
             }
         }
 
-        localSolver->optimize (route, bestGlobalMinimaLengths.back() );
+        localSolver->optimize (route, bestGlobalMinimaLengths );
         temp = routeLength (route, coords);
 
         if (temp < bestLocalMinimaLengths.back() ) {
@@ -134,7 +134,7 @@ void ILSGlobalSolverMT::optimize (vector<ROUTE_DATA_TYPE> &route, int once) {
                     bestGlobalMinimaLengths.push_back (temp);
                     bestGlobalMinima.push_back (route);
 
-                    if ( (comm == 1 || args->pthreads > 1) && !args->showLocalOptimizationInfo) {
+                    if ( (comm == 1 || args->pthreads > 1) && args->showLocalOptimizationInfo) {
                         trace ("[%s] New global minimum (%ld) -> Length: %ld = %.5f%% of the target\n", localSolver->getDescription().c_str(), bestGlobalMinima.size(), bestGlobalMinimaLengths.back(), 100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
                         tracef ("%ld, %.5f\n", bestGlobalMinimaLengths.back(), 100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
                     }
