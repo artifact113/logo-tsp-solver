@@ -15,6 +15,10 @@ TODO:
 - Neighborhood pruning (exponential function)
 - Asynchronous CUDA/OpenCL execution (while GPU executes the code, CPU can work on better perturbations)
 
+Logo v. 0.62 2013-05-03
+-----------------------
+- Changed local optimization display method, passing a pointer to global solutions instead of a value
+
 Logo v. 0.61 2013-04-30
 -----------------------
 - Fixed/Improved perturbation function
