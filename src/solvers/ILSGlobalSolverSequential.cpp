@@ -66,7 +66,7 @@ void ILSGlobalSolverSequential::optimize (vector<ROUTE_DATA_TYPE> &route, int on
     tracef ("%ld, %.5f\n", bestGlobalMinimaLengths.back(), 100.0 * (double) bestGlobalMinimaLengths.back() / (double) solution);
 
     do {
-        localSolver->optimize (route, bestGlobalMinimaLengths.back() );
+        localSolver->optimize (route, bestGlobalMinimaLengths );
         temp = routeLength (route, coords);
 
         if (temp < bestGlobalMinimaLengths.back() ) {

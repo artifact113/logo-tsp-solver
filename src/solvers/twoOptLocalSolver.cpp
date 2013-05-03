@@ -19,13 +19,15 @@
 
 //Implementation of the 2-opt solver
 
-void TwoOptLocalSolver::optimize (vector<ROUTE_DATA_TYPE> &route, unsigned long bestLength) {
+void TwoOptLocalSolver::optimize (vector<ROUTE_DATA_TYPE> &route, vector<unsigned long> &bestLength) {
+
     struct best2_out out;
     register int best_i, best_j, best_change;
     unsigned long newLength;
     INIT_TRACEF
 
     do {
+
         out = optimizeStep (route);
         best_change = out.minchange;
         best_i = out.i;
@@ -44,9 +46,11 @@ void TwoOptLocalSolver::optimize (vector<ROUTE_DATA_TYPE> &route, unsigned long 
         newLength = routeLength (route, coords);
 
         if (args->showLocalOptimizationInfo)
-            if (newLength < bestLength && best_change < 0) {
+        	if (bestLength.size() > 0)
+            if (newLength < bestLength.back() && best_change < 0) {
                 trace ("[%s] Local Optimization: 2-opt pair found (%d,%d) -> change %d, New length: %ld, %.5f%% of the known optimum\n", description.c_str(), best_i, best_j, best_change, newLength, 100.0 * (double) newLength / (double) args->solution);
                 tracef ("%ld, %.5f\n", newLength, 100.0 * (double) newLength / (double) args->solution);
             }
+
     } while (best_change < 0);
 };

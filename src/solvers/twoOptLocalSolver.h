@@ -48,7 +48,7 @@ public:
         //      printf("Thread %d ~TwoOptLocalSolver()\n", threadID);
     };
 
-    void optimize (vector<ROUTE_DATA_TYPE> &route, unsigned long bestLength);
+    void optimize (vector<ROUTE_DATA_TYPE> &route, vector<unsigned long> &bestLength);
 
 };
 #endif

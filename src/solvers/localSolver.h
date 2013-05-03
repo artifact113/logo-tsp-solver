@@ -110,7 +110,7 @@ public:
         //  printf("Thread %d ~LocalSolver()\n", threadID);
     };
 
-    virtual void optimize (vector<ROUTE_DATA_TYPE> &route, unsigned long bestLength) = 0;
+    virtual void optimize (vector<ROUTE_DATA_TYPE> &route, vector<unsigned long> &bestLength) = 0;
     virtual void init() = 0;
     virtual void close() = 0;
     virtual struct process_time benchmark (vector<ROUTE_DATA_TYPE> &route) = 0;
