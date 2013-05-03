@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.62  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #define _LOCAL_SOLVER_
 
 
-class LocalSolver {
+class           LocalSolver {
 
 public:
 
@@ -35,7 +35,7 @@ public:
         threadID = 0;
     };
 
-    LocalSolver (city_coords* _coords) {
+    LocalSolver (city_coords * _coords) {
         coords = _coords;
         deviceId = 0;
         args = NULL;
@@ -44,7 +44,7 @@ public:
         threadID = 0;
     };
 
-    LocalSolver (city_coords* _coords, cmdArguments* _args) {
+    LocalSolver (city_coords * _coords, cmdArguments * _args) {
         coords = _coords;
         args = _args;
         deviceId = 0;
@@ -53,7 +53,7 @@ public:
         threadID = 0;
     };
 
-    LocalSolver (city_coords* _coords, cmdArguments* _args, string _description) {
+    LocalSolver (city_coords * _coords, cmdArguments * _args, string _description) {
         coords = _coords;
         args = _args;
         description = _description;
@@ -62,7 +62,8 @@ public:
         threadID = 0;
     };
 
-    LocalSolver (city_coords* _coords, cmdArguments* _args, string _description, long _deviceId) {
+    LocalSolver (city_coords * _coords, cmdArguments * _args, string _description,
+                 long _deviceId) {
         coords = _coords;
         args = _args;
         description = _description;
@@ -71,7 +72,8 @@ public:
         threadID = 0;
     };
 
-    LocalSolver (city_coords* _coords, cmdArguments* _args, string _description, long _deviceId, ROUTE_DATA_TYPE _size) {
+    LocalSolver (city_coords * _coords, cmdArguments * _args, string _description,
+                 long _deviceId, ROUTE_DATA_TYPE _size) {
         coords = _coords;
         args = _args;
         description = _description;
@@ -80,7 +82,8 @@ public:
         threadID = 0;
     };
 
-    LocalSolver (city_coords* _coords, cmdArguments* _args, string _description, long _deviceId, ROUTE_DATA_TYPE _size, unsigned _tID) {
+    LocalSolver (city_coords * _coords, cmdArguments * _args, string _description,
+                 long _deviceId, ROUTE_DATA_TYPE _size, unsigned _tID) {
         coords = _coords;
         args = _args;
         description = _description;
@@ -90,11 +93,11 @@ public:
     };
 
 
-    void setArgs (cmdArguments* _args) {
+    void            setArgs (cmdArguments * _args) {
         args = _args;
     };
 
-    void setDescription (char* _description) {
+    void            setDescription (char *_description) {
         description = _description;
     };
 
@@ -102,27 +105,29 @@ public:
         return description;
     };
 
-    void setDeviceId (long _deviceId) {
+    void            setDeviceId (long _deviceId) {
         deviceId = _deviceId;
     };
 
-    virtual ~LocalSolver() {
-        //  printf("Thread %d ~LocalSolver()\n", threadID);
+    virtual ~ LocalSolver() {
+        // printf("Thread %d ~LocalSolver()\n", threadID);
     };
 
-    virtual void optimize (vector<ROUTE_DATA_TYPE> &route, vector<unsigned long> &bestLength) = 0;
-    virtual void init() = 0;
-    virtual void close() = 0;
-    virtual struct process_time benchmark (vector<ROUTE_DATA_TYPE> &route) = 0;
+    virtual void    optimize (vector < ROUTE_DATA_TYPE > &route,
+                              vector < unsigned long >&bestLength) = 0;
+    virtual void    init() = 0;
+    virtual void    close() = 0;
+    virtual struct process_time benchmark (vector < ROUTE_DATA_TYPE > &route) = 0;
 
 protected:
 
-    virtual struct best2_out optimizeStep (const vector<ROUTE_DATA_TYPE> &route) = 0;
-    cmdArguments* args;
-    city_coords* coords;
+    virtual struct best2_out optimizeStep (const vector < ROUTE_DATA_TYPE > &route) =
+        0;
+    cmdArguments   *args;
+    city_coords    *coords;
     std::string description;
-    long deviceId;
+    long            deviceId;
     ROUTE_DATA_TYPE size;
-    unsigned threadID;
+    unsigned        threadID;
 };
 #endif

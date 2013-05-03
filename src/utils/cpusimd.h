@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.62  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -30,8 +30,9 @@
 
 #define USE_512BIT_VECTORS
 
-inline __m512 _m512_vec_loadu_ps (float const *p_p) {
-    __m512 v = _mm512_setzero_ps();
+inline __m512
+_m512_vec_loadu_ps (float const *p_p) {
+    __m512          v = _mm512_setzero_ps();
     v = _mm512_loadunpacklo_ps (v, p_p);
     v = _mm512_loadunpackhi_ps (v, p_p + 16);
     return v;
@@ -47,7 +48,7 @@ inline __m512 _m512_vec_loadu_ps (float const *p_p) {
 #endif
 
 
-//SSE/AVX/MIC code
+// SSE/AVX/MIC code
 #ifndef _CPUSIMD_
 #define _CPUSIMD_
 
@@ -102,7 +103,8 @@ inline __m512 _m512_vec_loadu_ps (float const *p_p) {
 #define LOAD16F(x) _m512_vec_loadu_ps(x)
 
 #define FMAD16F(x, y, z) _mm512_fmadd_ps(x, y, z)
-//		#define LOAD16F(x) INIT16F(*x, *(x+1), *(x+2), *(x+3), *(x+4), *(x+5), *(x+6), *(x+7), *(x+8), *(x+9), *(x+10), *(x+11), *(x+12), *(x+13), *(x+14), *(x+15))
+// #define LOAD16F(x) INIT16F(*x, *(x+1), *(x+2), *(x+3), *(x+4), *(x+5), *(x+6),
+// *(x+7), *(x+8), *(x+9), *(x+10), *(x+11), *(x+12), *(x+13), *(x+14), *(x+15))
 #define BCAST16F(x) _mm512_set1_ps(x)
 #define INIT16F(e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,e14,e15) \
 			_mm512_set_ps(e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15);
@@ -194,12 +196,13 @@ inline __m512 _m512_vec_loadu_ps (float const *p_p) {
 
 typedef union OUTPUT_VECTOR {
 
-    VECF    v;
-    float  f[VECTOR_LENGTH];
+    VECF            v;
+    float           f[VECTOR_LENGTH];
 
 } OUTPUT_VECTOR;
 
-inline void print_vector (OUTPUT_VECTOR o) {
+inline void
+print_vector (OUTPUT_VECTOR o) {
     for (int i = 0; i < VECTOR_LENGTH; i++)
         printf ("%.1f, ", o.f[i]);
 

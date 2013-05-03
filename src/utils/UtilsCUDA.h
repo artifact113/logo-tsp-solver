@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.62  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -30,13 +30,13 @@
 
 #ifdef HAVE_CUDA
 
-class UtilsCUDA {
+class           UtilsCUDA {
 
 public:
 
-    static std::vector<cuda_dev_info> getCUDAInfo (int dev, int extended);
-    static std::vector<deviceInfo> listDevices (void);
-    static void CudaTest (const char *msg);
+    static          std::vector < cuda_dev_info > getCUDAInfo (int dev, int extended);
+    static          std::vector < deviceInfo > listDevices (void);
+    static void     CudaTest (const char *msg);
 };
 #endif
 #endif

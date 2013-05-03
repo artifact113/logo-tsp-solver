@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.62  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -31,16 +31,16 @@
 
 typedef struct {
 
-    cl_device_id id;
-    cl_platform_id platform;
-    cl_device_type type;
-    string device_string;
-    string platform_string;
-    cl_uint compute_units;
-    unsigned workgroup_size;
-    cl_ulong global_mem_size;
-    cl_ulong local_mem_size;
-    cl_uint preferred_vector;
+    cl_device_id    id;
+    cl_platform_id  platform;
+    cl_device_type  type;
+    string          device_string;
+    string          platform_string;
+    cl_uint         compute_units;
+    unsigned        workgroup_size;
+    cl_ulong        global_mem_size;
+    cl_ulong        local_mem_size;
+    cl_uint         preferred_vector;
 
 } cl_dev_info;
 

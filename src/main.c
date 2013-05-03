@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.62  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,7 +18,8 @@
 #include <headers.h>
 
 
-int main (int argc, const char** argv ) {
+int
+main (int argc, const char **argv) {
     printLicense();
 
     if (argc < 2) {
@@ -27,12 +28,10 @@ int main (int argc, const char** argv ) {
     }
 
     initStartTime();
-    //parse input
-    cmdArguments args = parseInput (argc, argv);
-    //init random seed
+    // parse input
+    cmdArguments    args = parseInput (argc, argv);
+    // init random seed
     initRand();
-    //go
+    // go
     run (&args);
 }
-
-

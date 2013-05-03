@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.62  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,13 +17,17 @@
 
 #include <twoOptLocalSolver.h>
 
-//Implementation of the 2-opt solver
+// Implementation of the 2-opt solver
 
-void TwoOptLocalSolver::optimize (vector<ROUTE_DATA_TYPE> &route, vector<unsigned long> &bestLength) {
+void
+TwoOptLocalSolver::optimize (vector < ROUTE_DATA_TYPE > &route,
+                             vector < unsigned long >&bestLength) {
 
     struct best2_out out;
-    register int best_i, best_j, best_change;
-    unsigned long newLength;
+    register int    best_i,
+             best_j,
+             best_change;
+    unsigned long   newLength;
     INIT_TRACEF
 
     do {
@@ -33,7 +37,7 @@ void TwoOptLocalSolver::optimize (vector<ROUTE_DATA_TYPE> &route, vector<unsigne
         best_i = out.i;
         best_j = out.j;
 
-        //perform the swap
+        // perform the swap
         if (best_j > best_i) {
             swapint (best_j, best_i);
         }
@@ -46,11 +50,15 @@ void TwoOptLocalSolver::optimize (vector<ROUTE_DATA_TYPE> &route, vector<unsigne
         newLength = routeLength (route, coords);
 
         if (args->showLocalOptimizationInfo)
-        	if (bestLength.size() > 0)
-            if (newLength < bestLength.back() && best_change < 0) {
-                trace ("[%s] Local Optimization: 2-opt pair found (%d,%d) -> change %d, New length: %ld, %.5f%% of the known optimum\n", description.c_str(), best_i, best_j, best_change, newLength, 100.0 * (double) newLength / (double) args->solution);
-                tracef ("%ld, %.5f\n", newLength, 100.0 * (double) newLength / (double) args->solution);
-            }
+            if (bestLength.size() > 0)
+                if (newLength < bestLength.back() && best_change < 0) {
+                    trace
+                    ("[%s] Local Optimization: 2-opt pair found (%d,%d) -> change %d, New length: %ld, %.5f%% of the known optimum\n",
+                     description.c_str(), best_i, best_j, best_change, newLength,
+                     100.0 * (double) newLength / (double) args->solution);
+                    tracef ("%ld, %.5f\n", newLength,
+                            100.0 * (double) newLength / (double) args->solution);
+                }
 
     } while (best_change < 0);
 };

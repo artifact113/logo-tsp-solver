@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.62  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #ifndef _ILS_GLOBAL_SOLVER_
 #define _ILS_GLOBAL_SOLVER_
 
-class ILSGlobalSolver {
+class           ILSGlobalSolver {
 
 
 public:
@@ -41,7 +41,7 @@ public:
         showLocalOptimizationInfo = DEFAULT_SHOW_LO_INFO;
     };
 
-    ILSGlobalSolver (city_coords* _coords) {
+    ILSGlobalSolver (city_coords * _coords) {
         localSolver = NULL;
         coords = _coords;
         description = "";
@@ -55,7 +55,7 @@ public:
         showLocalOptimizationInfo = DEFAULT_SHOW_LO_INFO;
     }
 
-    ILSGlobalSolver (city_coords* _coords, cmdArguments* _args) {
+    ILSGlobalSolver (city_coords * _coords, cmdArguments * _args) {
         localSolver = NULL;
         coords = _coords;
         args = _args;
@@ -69,7 +69,7 @@ public:
         showLocalOptimizationInfo = DEFAULT_SHOW_LO_INFO;
     }
 
-    ILSGlobalSolver (city_coords* _coords, cmdArguments* _args, string _description) {
+    ILSGlobalSolver (city_coords * _coords, cmdArguments * _args, string _description) {
         localSolver = NULL;
         coords = _coords;
         args = _args;
@@ -83,7 +83,8 @@ public:
         showLocalOptimizationInfo = DEFAULT_SHOW_LO_INFO;
     }
 
-    ILSGlobalSolver (city_coords* _coords, cmdArguments* _args, string _description, short _type) {
+    ILSGlobalSolver (city_coords * _coords, cmdArguments * _args, string _description,
+                     short _type) {
         localSolver = NULL;
         coords = _coords;
         args = _args;
@@ -97,7 +98,8 @@ public:
         showLocalOptimizationInfo = DEFAULT_SHOW_LO_INFO;
     }
 
-    ILSGlobalSolver (city_coords* _coords, cmdArguments* _args, string _description, short _type, ROUTE_DATA_TYPE _size) {
+    ILSGlobalSolver (city_coords * _coords, cmdArguments * _args, string _description,
+                     short _type, ROUTE_DATA_TYPE _size) {
         localSolver = NULL;
         coords = _coords;
         args = _args;
@@ -112,7 +114,8 @@ public:
         showLocalOptimizationInfo = DEFAULT_SHOW_LO_INFO;
     }
 
-    ILSGlobalSolver (city_coords* _coords, cmdArguments* _args, string _description, short _type, ROUTE_DATA_TYPE _size, long _deviceId) {
+    ILSGlobalSolver (city_coords * _coords, cmdArguments * _args, string _description,
+                     short _type, ROUTE_DATA_TYPE _size, long _deviceId) {
         localSolver = NULL;
         coords = _coords;
         args = _args;
@@ -127,7 +130,9 @@ public:
         showLocalOptimizationInfo = DEFAULT_SHOW_LO_INFO;
     }
 
-    ILSGlobalSolver (city_coords* _coords, cmdArguments* _args, string _description, short _type, ROUTE_DATA_TYPE _size, long _deviceId, int _threadID) {
+    ILSGlobalSolver (city_coords * _coords, cmdArguments * _args, string _description,
+                     short _type, ROUTE_DATA_TYPE _size, long _deviceId,
+                     int _threadID) {
         localSolver = NULL;
         coords = _coords;
         args = _args;
@@ -143,8 +148,9 @@ public:
     }
 
     // + args
-    ILSGlobalSolver (city_coords* _coords, cmdArguments* _args, string _description, short _type, ROUTE_DATA_TYPE _size,
-                     long _deviceId, int _threadID, unsigned long _s, float _t, float _e, short _sL) {
+    ILSGlobalSolver (city_coords * _coords, cmdArguments * _args, string _description,
+                     short _type, ROUTE_DATA_TYPE _size, long _deviceId,
+                     int _threadID, unsigned long _s, float _t, float _e, short _sL) {
         localSolver = NULL;
         coords = _coords;
         args = _args;
@@ -161,53 +167,53 @@ public:
 
 
 
-    virtual ~ILSGlobalSolver() {
-        //  printf("~ILSGlobalSolver()\n");
+    virtual ~ ILSGlobalSolver() {
+        // printf("~ILSGlobalSolver()\n");
     };
 
-    virtual void optimize (vector<ROUTE_DATA_TYPE> &route, int once = 0) = 0;
+    virtual void    optimize (vector < ROUTE_DATA_TYPE > &route, int once = 0) = 0;
 
-    process_time benchmark (vector<ROUTE_DATA_TYPE> &route) {
+    process_time    benchmark (vector < ROUTE_DATA_TYPE > &route) {
         return localSolver->benchmark (route);
     };
 
-    virtual void init() = 0;
-    virtual void close() = 0;
+    virtual void    init() = 0;
+    virtual void    close() = 0;
 
-    void setTimeLimit (float t) {
+    void            setTimeLimit (float t) {
         timelimit = t;
     };
-    void setError (float e) {
+    void            setError (float e) {
         error = e;
     };
-    void setShowLocalOptimizationInfo (short s) {
+    void            setShowLocalOptimizationInfo (short s) {
         showLocalOptimizationInfo = s;
     };
 
 protected:
 
-    cmdArguments* args;
-    city_coords* coords;
-    string description;
-    short type;
+    cmdArguments * args;
+    city_coords    *coords;
+    string          description;
+    short           type;
     ROUTE_DATA_TYPE size;
-    LocalSolver* localSolver;
-    static vector<vector <ROUTE_DATA_TYPE> > bestGlobalMinima;
-    static vector<unsigned long > bestGlobalMinimaLengths;
+    LocalSolver    *localSolver;
+    static          vector < vector < ROUTE_DATA_TYPE > >bestGlobalMinima;
+    static          vector < unsigned long >bestGlobalMinimaLengths;
 
-    long deviceId;
-    int threadID;
+    long            deviceId;
+    int             threadID;
 
     unsigned long   solution;
     float           timelimit;
     float           error;
     short           showLocalOptimizationInfo;
 
-    void randomPerturbation (vector<ROUTE_DATA_TYPE> &route);
-    void perturbation (vector<ROUTE_DATA_TYPE> &route, unsigned kicks);
-    void kick (vector<ROUTE_DATA_TYPE> &route);
+    void            randomPerturbation (vector < ROUTE_DATA_TYPE > &route);
+    void            perturbation (vector < ROUTE_DATA_TYPE > &route, unsigned kicks);
+    void            kick (vector < ROUTE_DATA_TYPE > &route);
 
-    void moveBack (vector<ROUTE_DATA_TYPE> &route);
-    void globalBackracking (vector<ROUTE_DATA_TYPE> &route);
+    void            moveBack (vector < ROUTE_DATA_TYPE > &route);
+    void            globalBackracking (vector < ROUTE_DATA_TYPE > &route);
 };
 #endif

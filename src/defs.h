@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.62  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,19 +17,20 @@
 #ifndef DEFS_H_
 #include <vector>
 
-//data type used to store cities' IDs (should be small, but sufficient, i.e. unsigned int)
+// data type used to store cities' IDs (should be small, but sufficient, i.e.
+// unsigned int)
 #define ROUTE_DATA_TYPE unsigned int
 
-//max number of cities handled - memory limited
+// max number of cities handled - memory limited
 #define MAX_CITIES 2097152
 
-//PI - needed in case of GEO coordinates
+// PI - needed in case of GEO coordinates
 #define PI 3.14159265358979323846264f
 
 #define USE_ORDERED_COORDS
 
 #ifdef __linux__
-//use aligned malloc
+// use aligned malloc
 #define USE_MEM_ALIGN
 #define MEM_ALIGN 1024
 #endif
@@ -40,10 +41,11 @@
 #define ALLOC(size) malloc( size);
 #endif
 
-//approximation of sqrt(AVX's sqrt is a bottleneck (split into 128-bit operations)) // used in cpusimd.h
-//#ifdef USE_AVX
+// approximation of sqrt(AVX's sqrt is a bottleneck (split into 128-bit operations))
+// // used in cpusimd.h
+// #ifdef USE_AVX
 #define USE_FAST_SQRT
-//#endif
+// #endif
 
 #ifdef USE_FAST_SQRT
 #define CPU_FLOPS_PER_DISTANCE 7
@@ -51,7 +53,7 @@
 #define CPU_FLOPS_PER_DISTANCE 6
 #endif
 
-//some faster bitwise operations
+// some faster bitwise operations
 #define swapint(x,y) { x ^= y; y ^= x; x ^= y;}
 #define negative(x) (~x + 1)
 #define mod256(x) (x & 255)
@@ -93,17 +95,18 @@
 
 #define DEFAULT_GLOBAL_SOLVER TYPE_GLOBAL_SOLVER_CPU
 
-//log
+// log
 #define TIME printCurrentLocalTime();
 #define trace TIME printf
 
-//log to a file
+// log to a file
 #define INIT_TRACEF char temp_string[256];
-#define tracef(X, ...)  sprintf(temp_string, X, ##__VA_ARGS__); logToFile(args->outfilename, temp_string)
+#define tracef(X, ...)  sprintf(temp_string, X, ##__VA_ARGS__); \
+						logToFile(args->outfilename, temp_string)
 
 #define MAX_THREADS 512
 
-//route init methods
+// route init methods
 #define ROUTE_INIT_SIMPLE 0
 #define ROUTE_INIT_NN 1
 #define ROUTE_INIT_SHUFFLE 2
@@ -127,98 +130,102 @@
 
 #endif
 
-//used structures
+// used structures
 #ifndef _STRUCTS
 #define _STRUCTS
 
-//input parameters
+// input parameters
 typedef struct {
 
-    char*                   filename;
-    char*                   outfilename;
-    short                   gpuThreads;
-    short                   gpuBlocks;
-    unsigned long           solution;
-    float                   timelimit;
-    float                   error;
-    short                   initRouteFromFile;
-    char*                   initRouteFile;
-    char*                   initMethod;
-    short                   mode;
-    ROUTE_DATA_TYPE         maxKicks;
-    short                   device;
-    short					maxDevices;
-    short                   autoDevice;
-    unsigned                pthreads;
-    unsigned                setAffinity;
-    unsigned                maxCoresUsed;
-    char*                   backtracking;
-    unsigned                backtrackingLimit;
-    short                   comm;
-    float                   commPart;
-    unsigned                stallIterations;
-    unsigned                stallTimePeriod;
-    unsigned                stallTimeMultiplier;
-    short                   showLocalOptimizationInfo;
-    short                   trackSolution;
-    short                   benchmark;
-    short					vectorsize;
+    char           *filename;
+    char           *outfilename;
+    short           gpuThreads;
+    short           gpuBlocks;
+    unsigned long   solution;
+    float           timelimit;
+    float           error;
+    short           initRouteFromFile;
+    char           *initRouteFile;
+    char           *initMethod;
+    short           mode;
+    ROUTE_DATA_TYPE maxKicks;
+    short           device;
+    short           maxDevices;
+    short           autoDevice;
+    unsigned        pthreads;
+    unsigned        setAffinity;
+    unsigned        maxCoresUsed;
+    char           *backtracking;
+    unsigned        backtrackingLimit;
+    short           comm;
+    float           commPart;
+    unsigned        stallIterations;
+    unsigned        stallTimePeriod;
+    unsigned        stallTimeMultiplier;
+    short           showLocalOptimizationInfo;
+    short           trackSolution;
+    short           benchmark;
+    short           vectorsize;
 
 } cmdArguments;
 
-//coordinate's storage
+// coordinate's storage
 typedef struct cc {
 
-    float x;
-    float y;
+    float           x;
+    float           y;
 
 } city_coords;
 
-//best 2-opt exchange
+// best 2-opt exchange
 struct best2_out {
 
     ROUTE_DATA_TYPE i;
     ROUTE_DATA_TYPE j;
-    int minchange;
+    int             minchange;
 
 };
 
-//processing time and estimated computation performed (FLOPs)
+// processing time and estimated computation performed (FLOPs)
 struct process_time {
 
-    double kernel_time;     //kernel time
-    double HtD_time;        //Host to device transfer time (if CPU processing = 0)
-    double DtH_time;        //Device to host transfer time (if CPU processing = 0)
+    double          kernel_time;	// kernel time
+    double          HtD_time;	// Host to device transfer time
+    // (equals 0 if CPU processing)
+    double          DtH_time;	// Device to host transfer time
+    // (equals 0 if CPU processing)
     struct best2_out out;
 };
 
 // multiple fragment heuristic - kdtree_utils.c
 typedef struct fragment {
 
-    int distance;
+    int             distance;
     ROUTE_DATA_TYPE id;
 
 } fragment;
 
-class CompareFragments {
+class           CompareFragments {
 public:
-    bool operator() (fragment& f1, fragment& f2) { // Returns true if t1 is earlier than t2
+    bool operator() (fragment & f1, fragment & f2) {
+    	// Returns true if t1 is
+        // earlier than t2
         if (f1.distance > f2.distance) {
             return true;
         }
 
-        return false;
+        return          false;
     }
 };
 
 typedef struct {
 
-    unsigned id;
-    std::vector<ROUTE_DATA_TYPE> route;
-    cmdArguments* args;
-    city_coords* coords;
-    unsigned short method;
-    unsigned dev;
+    unsigned        id;
+    std::vector < ROUTE_DATA_TYPE > route;
+    cmdArguments   *args;
+    city_coords    *coords;
+    unsigned short  method;
+    unsigned        dev;
 
 } threadData;
 
@@ -226,10 +233,10 @@ typedef struct {
 
     std::string name;
     std::string type;
-    short typeId;
+    short           typeId;
     std::string subtype;
-    long localNum;
-    int globalNum;
+    long            localNum;
+    int             globalNum;
 
 } deviceInfo;
 

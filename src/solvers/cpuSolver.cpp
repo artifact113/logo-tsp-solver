@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.61  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.62  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,19 +17,23 @@
 
 #include <cpuSolver.h>
 
-void CPUSolver::init() {
-    //nothing?
+void
+CPUSolver::init() {
+    // nothing?
 };
 
-void CPUSolver::close() {
-    //nothing?
+void
+CPUSolver::close() {
+    // nothing?
 };
 
-struct process_time CPUSolver::benchmark (vector<ROUTE_DATA_TYPE> &route) {
+struct process_time
+CPUSolver::benchmark (vector < ROUTE_DATA_TYPE > &route) {
 
     struct best2_out out;
-    struct timeval start, end;
-    process_time time;
+    struct timeval  start,
+            end;
+    process_time    time;
 
     gettimeofday (&start, NULL);
 
@@ -42,28 +46,30 @@ struct process_time CPUSolver::benchmark (vector<ROUTE_DATA_TYPE> &route) {
     time.DtH_time = 0;
     time.out = out;
 
-    //debug code
-    trace ("[%s] Local Optimization: 2-opt pair found (%d,%d) -> change %d\n", description.c_str(), out.i, out.j, out.minchange);
+    // debug code
+    trace ("[%s] Local Optimization: 2-opt pair found (%d,%d) -> change %d\n",
+           description.c_str(), out.i, out.j, out.minchange);
 
     return time;
 
 };
 
-//Implementation of the 2-opt exchange step
+// Implementation of the 2-opt exchange step
 
-struct best2_out CPUSolver::optimizeStep (const vector<ROUTE_DATA_TYPE> &route) {
+struct best2_out
+CPUSolver::optimizeStep (const vector < ROUTE_DATA_TYPE > &route) {
 
     struct best2_out out;
     out.minchange = 0;
-    int temp_change;
+    int             temp_change;
 
 
 #ifdef USE_ORDERED_COORDS
-    //reorder coordinates in the route's order
+    // reorder coordinates in the route's order
 
-    //create x and y float vectors for aligned coalesced SSE/AVX loads
-    float* coordsX = (float*) ALLOC ( sizeof (float) * route.size() );
-    float* coordsY = (float*) ALLOC ( sizeof (float) * route.size() );
+    // create x and y float vectors for aligned coalesced SSE/AVX loads
+    float          *coordsX = (float *) ALLOC (sizeof (float) * route.size() );
+    float          *coordsY = (float *) ALLOC (sizeof (float) * route.size() );
 
     for (ROUTE_DATA_TYPE i = 0; i < route.size(); i++) {
         coordsX[i] = coords[route[i]].x;
@@ -74,22 +80,35 @@ struct best2_out CPUSolver::optimizeStep (const vector<ROUTE_DATA_TYPE> &route) 
 
 #ifdef USE_CPU_SIMD
 
-    VECF dx1, dy1, dx2, dy2, dx3, dy3, dx4, dy4, sum1, sum2, diff;
-    VECF coordsB1X, coordsB2X, coordsB1Y, coordsB2Y;
-    const float pointFive = 0.5f;
-    VECF constant = LOAD_CONST (pointFive);
-    OUTPUT_VECTOR o;
+    VECF            dx1,
+                    dy1,
+                    dx2,
+                    dy2,
+                    dx3,
+                    dy3,
+                    dx4,
+                    dy4,
+                    sum1,
+                    sum2,
+                    diff;
+    VECF            coordsB1X,
+                    coordsB2X,
+                    coordsB1Y,
+                    coordsB2Y;
+    const float     pointFive = 0.5f;
+    VECF            constant = LOAD_CONST (pointFive);
+    OUTPUT_VECTOR   o;
 
 #endif
 
     for (ROUTE_DATA_TYPE i = 1; i < route.size() - 2; i++) {
 #ifdef USE_ORDERED_COORDS
-        register int const1 = calculateDistance2D (i, i - 1, coordsX, coordsY);
+        register int    const1 = calculateDistance2D (i, i - 1, coordsX, coordsY);
 #ifdef USE_CPU_SIMD
-        VECF coordsA2X = LOAD_CONST (coordsX[i - 1]);
-        VECF coordsA2Y = LOAD_CONST (coordsY[i - 1]);
-        VECF coordsA1Y = LOAD_CONST (coordsY[i]);
-        VECF coordsA1X = LOAD_CONST (coordsX[i]);
+        VECF            coordsA2X = LOAD_CONST (coordsX[i - 1]);
+        VECF            coordsA2Y = LOAD_CONST (coordsY[i - 1]);
+        VECF            coordsA1Y = LOAD_CONST (coordsY[i]);
+        VECF            coordsA1X = LOAD_CONST (coordsX[i]);
         dx3 = SUBF (coordsA1X, coordsA2X);
         dy3 = SUBF (coordsA1Y, coordsA2Y);
         dx3 = MULF (dx3, dx3);
@@ -98,17 +117,25 @@ struct best2_out CPUSolver::optimizeStep (const vector<ROUTE_DATA_TYPE> &route) 
         dx3 = SQRTF (dx3);
 #endif
 #else
-        register int const1 = calculateDistance2D (route[i], route[i - 1], coords);
+        register int    const1 = calculateDistance2D (route[i], route[i - 1], coords);
 #endif
 
         for (ROUTE_DATA_TYPE j = i + 1; j < route.size() - 1; j += VECTOR_LENGTH) {
 #ifndef USE_ORDERED_COORDS
-            temp_change = (unsigned long) (calculateDistance2D (route[i], route[j + 1], coords) + calculateDistance2D (route[i - 1], route[j], coords) -
-                                           const1 - calculateDistance2D (route[j + 1], route[j], coords) - 0.5f);
+            temp_change =
+                (unsigned long) (calculateDistance2D (route[i], route[j + 1], coords)
+                                 + calculateDistance2D (route[i - 1], route[j],
+                                         coords) - const1 -
+                                 calculateDistance2D (route[j + 1], route[j],
+                                         coords) - 0.5f);
 #else
 #ifndef USE_CPU_SIMD
-            temp_change = (unsigned long) (calculateDistance2D (i, j + 1, coordsX, coordsY) + calculateDistance2D (i - 1, j, coordsX, coordsY) -
-                                           const1 - calculateDistance2D (j + 1, j, coordsX, coordsY) - 0.5f);
+            temp_change =
+                (unsigned long) (calculateDistance2D (i, j + 1, coordsX, coordsY) +
+                                 calculateDistance2D (i - 1, j, coordsX,
+                                         coordsY) - const1 -
+                                 calculateDistance2D (j + 1, j, coordsX,
+                                         coordsY) - 0.5f);
 
             if (temp_change < 0) {
                 if (temp_change < out.minchange) {
@@ -120,7 +147,7 @@ struct best2_out CPUSolver::optimizeStep (const vector<ROUTE_DATA_TYPE> &route) 
 
 #else
 
-            //if more than VECTOR_LENGTH left...
+            // if more than VECTOR_LENGTH left...
             if (j < route.size() - VECTOR_LENGTH) {
                 coordsB1X = LOADF (coordsX + j + 1);
                 coordsB2X = LOADF (coordsX + j);
@@ -149,7 +176,7 @@ struct best2_out CPUSolver::optimizeStep (const vector<ROUTE_DATA_TYPE> &route) 
                 diff = SUBF (sum1, sum2);
                 diff = SUBF (diff, constant);
 #ifdef USE_512BIT_VECTORS
-                float m = MIN16F (diff);
+                float           m = MIN16F (diff);
 
                 if (m < out.minchange) {
 #endif
@@ -171,8 +198,12 @@ struct best2_out CPUSolver::optimizeStep (const vector<ROUTE_DATA_TYPE> &route) 
 
             } else {
                 // if size(elements left) < VECTOR_LENGTH
-                temp_change = (unsigned long) (calculateDistance2D (i, j + 1, coordsX, coordsY) + calculateDistance2D (i - 1, j, coordsX, coordsY) -
-                                               const1 - calculateDistance2D (j + 1, j, coordsX, coordsY) - 0.5f);
+                temp_change =
+                    (unsigned long) (calculateDistance2D (i, j + 1, coordsX, coordsY)
+                                     + calculateDistance2D (i - 1, j, coordsX,
+                                             coordsY) - const1 -
+                                     calculateDistance2D (j + 1, j, coordsX,
+                                             coordsY) - 0.5f);
 
                 if (temp_change < 0) {
                     if (temp_change < out.minchange) {
@@ -194,4 +225,3 @@ struct best2_out CPUSolver::optimizeStep (const vector<ROUTE_DATA_TYPE> &route) 
 #endif
     return out;
 };
-
