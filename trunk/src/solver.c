@@ -183,7 +183,7 @@ vector < ROUTE_DATA_TYPE > optimizeThreaded (cmdArguments * args,
     threadData      messages[MAX_THREADS];
     pthread_t       threads[MAX_THREADS];
     vector < deviceInfo > selectedDevices = selectDevices (args, method);
-    initStartTime();
+    if (method != MODE_CPU_ALL) initStartTime();
     trace ("Launching threads...\n");
 
     for (unsigned int i = 0; i < selectedDevices.size(); i++) {
