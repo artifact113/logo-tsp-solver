@@ -161,7 +161,7 @@ ILSGlobalSolverMT::optimize (vector < ROUTE_DATA_TYPE > &route, int once) {
                     bestGlobalMinima.push_back (route);
 
                     if ( (comm == 1 || args->pthreads > 1)
-                            && args->showLocalOptimizationInfo) {
+                            && !args->showLocalOptimizationInfo) {
                         trace
                         ("[%s] New global minimum (%ld) -> Length: %ld = %.5f%% of the target\n",
                          localSolver->getDescription().c_str(),
