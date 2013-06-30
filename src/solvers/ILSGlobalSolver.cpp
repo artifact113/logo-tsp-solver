@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.62  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.63  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@ ILSGlobalSolver::kick (vector < ROUTE_DATA_TYPE > &route) {
         swapint (a, b);
     }
 
-    rotate (route.begin(), route.begin() + a, route.end() );
-    reverse (route.begin() + (b - a), route.end() );
+    //rotate (route.begin(), route.begin() + a, route.end() );
+    //reverse (route.begin() + (b - a), route.end() );
+    REVERSE(route, a, b)
 }
