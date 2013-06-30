@@ -1,5 +1,5 @@
 /*
- *   Logo TSP Solver ver. 0.62  Copyright (C) 2013  Kamil Rocki
+ *   Logo TSP Solver ver. 0.63  Copyright (C) 2013  Kamil Rocki
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -187,5 +187,23 @@ inline unsigned long
 routeLength (vector < ROUTE_DATA_TYPE > &route, city_coords * coords) {
     return routeLength (route, coords, 0, route.size() );
 };
+
+inline float exponential_rand(float lambda)  {
+  float u,x;
+  u=(float)rand()/ (float)(RAND_MAX);
+  x=(-1/lambda)*log(u);
+  return(min(x,1.0f));
+}
+
+#define REVERSE(route, a, b) \
+        	if (((b) - (a)) > route.size() / 2) { \
+				rotate (route.begin(), route.begin() + (a), route.end() ); \
+				reverse (route.begin() + ((b) - (a)), route.end() ); \
+			} \
+			else { \
+				rotate (route.begin(), route.begin() + (b), route.end() ); \
+				reverse (route.end() - ((b) - (a)), route.end() ); \
+			}
+
 
 #endif
